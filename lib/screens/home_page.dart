@@ -5,6 +5,7 @@ import 'package:flutter_timeline_calendar/timeline/model/day_options.dart';
 import 'package:flutter_timeline_calendar/timeline/model/headers_options.dart';
 import 'package:flutter_timeline_calendar/timeline/utils/calendar_types.dart';
 import 'package:flutter_timeline_calendar/timeline/widget/timeline_calendar.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:taskinatoruz/colors/colors.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,6 +22,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     TabController tabController = TabController(length: 4, vsync: this,);
     return  Scaffold(
       backgroundColor: bkground,
+
       appBar: AppBar(
         title:Row(
           mainAxisAlignment: MainAxisAlignment.center,

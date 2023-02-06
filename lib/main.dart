@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:taskinatoruz/screens/adding_page.dart';
 import 'package:taskinatoruz/screens/home_page.dart';
+import 'package:taskinatoruz/screens/settings_page.dart';
+import 'package:taskinatoruz/screens/tips_page.dart';
+
+import 'colors/colors.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,13 +20,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         color: Colors.transparent,
         debugShowCheckedModeBanner: false,
-      home: HomePage()
+      home: MyHomePage()
     );
   }
 }
 
-/*class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key,});
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -31,25 +37,16 @@ class MyApp extends StatelessWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
-  final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
-}*/
+}
 
-/*class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _MyHomePageState extends State<MyHomePage> {
+ int index = 0;
+ final bottomItems = <Widget>[HomePage(),TipsPage(),SettingsPage(),AddingPage()];
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -60,17 +57,30 @@ class MyApp extends StatelessWidget {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      bottomNavigationBar: GNav(
+        selectedIndex: index,
+        onTabChange: (x){
+          setState(() {
+            index = x;
+          });
+        },
+        activeColor: Colors.white,
+        iconSize: 24,
+        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+        tabMargin: EdgeInsets.only(left: 10,right: 10,bottom: 10),
+        duration: Duration(milliseconds: 400),
+        tabBackgroundColor: bottomNav,
+        color: Colors.black,
+        gap: 3,
+        tabs: const [
+          GButton(icon: Icons.home,text: "Home",),
+          GButton(icon: Icons.tips_and_updates,text: "Tips",),
+          GButton(icon: Icons.settings,text: "Settings",),
+          GButton(icon: Icons.add_circle_outline,iconColor: Colors.orange,),
+        ],
 
       ),
-    // This trailing comma makes auto-formatting nicer for build methods.
+      body:bottomItems[index]
     );
   }
-}*/
+}
