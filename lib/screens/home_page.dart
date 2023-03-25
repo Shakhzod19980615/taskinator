@@ -21,10 +21,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  final dbhelper =DatabaseHelper.instance;
+  //final dbhelper =DatabaseHelper.instance;
   List<TaskModel>? taskModel;
-  late SqliteService _sqliteService;
-  @override
+  var _sqliteService = SqliteService();
+  /*@override
   void initState() {
     this._sqliteService= SqliteService();
     this._sqliteService.initializeDB().whenComplete(() async {
@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     });
 
     super.initState();
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -145,15 +145,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       ),
     );
   }
-  Widget _islamList(){
-    return FutureBuilder<List<TaskModel>?>(
-        future: dbhelper.getTasks(),
+   Widget _islamList()  {
+    return FutureBuilder<List<TaskModel>>(
+        future:   _sqliteService.getTasks(),
         builder: (context, snapshot){
-        if(!snapshot.hasData){
+        if(!snapshot.hasData) {
           return Image.asset("assets/images/Islam.jpg");
         }else{
-          var list = snapshot.data;
-          return SizedBox(
+          var list =  snapshot.data;
+          return  SizedBox(
             height: 150,
             width: 300,
             child: ListView.builder(

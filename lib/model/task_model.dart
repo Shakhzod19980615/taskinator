@@ -3,7 +3,7 @@ class TaskModel {
   final int? category;
   final String? task_title;
   final String? task_description;
-  final String? date;
+  final String? task_date;
   final String? start_time;
   final String? end_time;
 
@@ -12,7 +12,7 @@ class TaskModel {
         this.category,
         this.task_title,
         this.task_description,
-        this.date,
+        this.task_date,
         this.start_time,
         this.end_time});
 
@@ -21,7 +21,7 @@ class TaskModel {
     category: json['category'],
     task_title: json['task_title'],
     task_description: json['task_description'],
-    date: json['date'],
+    task_date: json['task_date'],
     start_time: json['start_time'],
     end_time: json["end_time"],
   );
@@ -32,7 +32,7 @@ class TaskModel {
       'category': category,
       'task_title': task_title,
       'task_description': task_description,
-      'date': date,
+      'task_date': task_date,
       'start_time': start_time,
       "end_time": end_time
     };

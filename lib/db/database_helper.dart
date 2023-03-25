@@ -1,3 +1,4 @@
+/*
 import 'dart:io';
 
 import 'package:flutter/services.dart';
@@ -59,7 +60,8 @@ class DatabaseHelper {
           )
           ''');
   }
-  /*_insert(TaskModel taskModel) async {
+  */
+/*_insert(TaskModel taskModel) async {
 
     // get a reference to the database
     // because this is an expensive operation we use async and await
@@ -72,15 +74,18 @@ class DatabaseHelper {
 
     // show the results: print all rows in the db
     print(await db.query(DatabaseHelper.task));
-  }*/
+  }*//*
+
 Future<void> insertTask(TaskModel tasks) async{
 
     final Database db = await instance.database;
     await db.insert("task_table", tasks.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
-    /*String insertInfos = """INSERT INTO task(category, task_title, task_description, date, start_time,end_time)
+    */
+/*String insertInfos = """INSERT INTO task(category, task_title, task_description, date, start_time,end_time)
     VALUES(${tasks.category},${tasks.task_title},${tasks.task_description},${tasks.date },
     ${tasks.start_time},${tasks.end_time} )""";
-    await db.rawQuery(insertInfos);*/
+    await db.rawQuery(insertInfos);*//*
+
 
   }
 Future<List<TaskModel>> getTasks() async{
@@ -92,3 +97,4 @@ Future<List<TaskModel>> getTasks() async{
     return modelList;
   }
 }
+*/

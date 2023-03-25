@@ -32,10 +32,10 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
   String startTime = "";
   String endTime = "";
   bool? isSaved = false;
-  final dbhelper =DatabaseHelper.instance;
+  //final dbhelper =DatabaseHelper.instance;
   late TabController _tabController;
   final _titleKey = GlobalKey<FormState>();
-  late SqliteService _sqliteService;
+  var _sqliteService = SqliteService();
 
 
   @override
@@ -43,12 +43,7 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
     super.initState();
     _tabController = TabController(vsync: this, length: myTabs.length);
     initializeDateFormatting();
-    this._sqliteService= SqliteService();
-    this._sqliteService.initializeDB().whenComplete(() async {
-      //await _refreshNotes();
-      setState(() {});
-    });
-
+    //this._sqliteService= SqliteService();
   }
 
   @override
@@ -273,12 +268,12 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
                     onTap: ()async {
                       print("insert");
                       if(_titleKey.currentState!.validate()){
-                      await dbhelper.insertTask(TaskModel(
+                       var result = await _sqliteService.insertData(TaskModel(
                           category:_tabController.index,
                           task_title: titleController.text,
                           task_description: titleDescriptionController.text,
-                          date: date,start_time: startTime,end_time: endTime));
-
+                          task_date: date,start_time: startTime,end_time: endTime));
+                       print(result);
                     }
                       },
                     child: Text("SUBMIT",style: TextStyle(color: Colors.white),)),
