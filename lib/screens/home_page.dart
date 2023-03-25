@@ -8,6 +8,11 @@ import 'package:flutter_timeline_calendar/timeline/widget/timeline_calendar.dart
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:taskinatoruz/colors/colors.dart';
 
+import '../db/database_helper.dart';
+import '../db/db_helper.dart';
+import '../model/task_model.dart';
+import '../widget/list_item.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -16,6 +21,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  final dbhelper =DatabaseHelper.instance;
+  List<TaskModel>? taskModel;
+  late SqliteService _sqliteService;
+  @override
+  void initState() {
+    this._sqliteService= SqliteService();
+    this._sqliteService.initializeDB().whenComplete(() async {
+      //await _refreshNotes();
+      setState(() {});
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +132,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               height: 300,
               child: TabBarView(
                   controller: tabController,
-                  children: [Image.asset("assets/images/Islam.jpg"),
+                  children: [
+                    /*Image.asset("assets/images/Islam.jpg"),*/
+                    _islamList(),
                     Image.asset("assets/images/Family.jpg"),
                     Image.asset("assets/images/Work.jpg"),
                     Image.asset("assets/images/Personal.jpg")]),
@@ -124,5 +144,30 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ),
       ),
     );
+  }
+  Widget _islamList(){
+    return FutureBuilder<List<TaskModel>?>(
+        future: dbhelper.getTasks(),
+        builder: (context, snapshot){
+        if(!snapshot.hasData){
+          return Image.asset("assets/images/Islam.jpg");
+        }else{
+          var list = snapshot.data;
+          return SizedBox(
+            height: 150,
+            width: 300,
+            child: ListView.builder(
+              shrinkWrap: true,
+                padding:  const EdgeInsets.only(top: 30),
+                itemCount: list?.length ??0,
+                itemBuilder: (context,index){
+                  return ListItem(taskList: list,index1: index,);
+                }),
+          );
+        }
+      },
+    );
+
+
   }
 }
