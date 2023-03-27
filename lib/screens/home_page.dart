@@ -7,6 +7,7 @@ import 'package:flutter_timeline_calendar/timeline/utils/calendar_types.dart';
 import 'package:flutter_timeline_calendar/timeline/widget/timeline_calendar.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:taskinatoruz/colors/colors.dart';
+import 'package:taskinatoruz/screens/update_page.dart';
 
 import '../db/database_helper.dart';
 import '../db/db_helper.dart';
@@ -129,16 +130,22 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ),
             Container(
               width: double.maxFinite,
-              height: 300,
+              height: 350,
+              padding: EdgeInsets.zero,
+              margin: EdgeInsets.only(left: 10,right: 10,),
               child: TabBarView(
                   controller: tabController,
                   children: [
                     /*Image.asset("assets/images/Islam.jpg"),*/
                     _islamList(),
-                    Image.asset("assets/images/Family.jpg"),
-                    Image.asset("assets/images/Work.jpg"),
-                    Image.asset("assets/images/Personal.jpg")]),
-            )
+                    _familyList(),
+                    //Image.asset("assets/images/Family.jpg"),
+                    _workList(),
+                    //Image.asset("assets/images/Work.jpg"),
+                    _personalList(),
+                    //Image.asset("assets/images/Personal.jpg")]),
+              ]
+            ))
 
           ],
         ),
@@ -147,18 +154,43 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
    Widget _islamList()  {
     return FutureBuilder<List<TaskModel>>(
-        future:   _sqliteService.getTasks(),
+        future:   _sqliteService.getIslamTasks(),
         builder: (context, snapshot){
         if(!snapshot.hasData) {
           return Image.asset("assets/images/Islam.jpg");
         }else{
           var list =  snapshot.data;
-          return  SizedBox(
-            height: 150,
+          return  Container(
+            margin: EdgeInsets.only(top: 10,bottom: 10),
+            padding: EdgeInsets.only(top: 10),
+            height: 350,
             width: 300,
             child: ListView.builder(
               shrinkWrap: true,
-                padding:  const EdgeInsets.only(top: 30),
+                itemCount: list?.length ??0,
+                itemBuilder: (context,index){
+                  return ListItem(taskList: list,index1: index,);
+                }),
+          );
+        }
+      },
+    );
+  }
+   Widget _familyList()  {
+    return FutureBuilder<List<TaskModel>>(
+      future:   _sqliteService.getFamilyTasks(),
+      builder: (context, snapshot){
+        if(!snapshot.hasData ) {
+          return Image.asset("assets/images/Family.jpg");
+        }else{
+          var list =  snapshot.data;
+          return  Container(
+            margin: EdgeInsets.only(top: 10,bottom: 10),
+            padding: EdgeInsets.only(top: 10),
+            height: 350,
+            width: 300,
+            child: ListView.builder(
+                shrinkWrap: true,
                 itemCount: list?.length ??0,
                 itemBuilder: (context,index){
                   return ListItem(taskList: list,index1: index,);
@@ -170,4 +202,58 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
 
   }
+   Widget _workList()  {
+    return FutureBuilder<List<TaskModel>>(
+      future:   _sqliteService.getWorkTasks(),
+      builder: (context, snapshot){
+        if(!snapshot.hasData ) {
+          return Image.asset("assets/images/Work.jpg");
+        }else{
+          var list =  snapshot.data;
+          return  Container(
+            margin: EdgeInsets.only(top: 10,bottom: 10),
+            padding: EdgeInsets.only(top: 10),
+            height: 350,
+            width: 300,
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: list?.length ??0,
+                itemBuilder: (context,index){
+                  return ListItem(taskList: list,index1: index,);
+                }),
+          );
+        }
+      },
+    );
+
+
+  }
+   Widget _personalList()  {
+    return FutureBuilder<List<TaskModel>>(
+      future:   _sqliteService.getPersonalTasks(),
+      builder: (context, snapshot){
+        if(!snapshot.hasData && _sqliteService.getPersonalTasks() == 0 ) {
+          return Image.asset("assets/images/Work.jpg");
+        }else{
+          var list =  snapshot.data;
+          return  Container(
+            margin: EdgeInsets.only(top: 10,bottom: 10),
+            padding: EdgeInsets.only(top: 10),
+            height: 350,
+            width: 300,
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: list?.length ??0,
+                itemBuilder: (context,index){
+                  return ListItem(taskList: list,index1: index,);
+                }),
+          );
+        }
+      },
+    );
+
+
+  }
+
+
 }

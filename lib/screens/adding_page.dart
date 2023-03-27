@@ -257,26 +257,34 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
                       });
                     }),
               ),
-              Container(
-                decoration: BoxDecoration(
-                    color: Colors.orange,
-                    borderRadius: BorderRadius.circular(10)
+              InkWell(
+                onTap: ()async {
+                  print("insert");
+                  if(_titleKey.currentState!.validate()){
+                    var result = await _sqliteService.insertData(TaskModel(
+                        category:_tabController.index,
+                        task_title: titleController.text,
+                        task_description: titleDescriptionController.text,
+                        task_date: date,start_time: startTime,end_time: endTime));
+                    print(result);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              MyHomePage()
+                      ),
+                    );
+                  }
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.orange,
+                      borderRadius: BorderRadius.circular(10)
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.38,vertical: 20),
+                  margin: EdgeInsets.only(top: 20),
+                  child: Text("SUBMIT",style: TextStyle(color: Colors.white),),
                 ),
-                padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.38,vertical: 20),
-                margin: EdgeInsets.only(top: 20),
-                child: InkWell(
-                    onTap: ()async {
-                      print("insert");
-                      if(_titleKey.currentState!.validate()){
-                       var result = await _sqliteService.insertData(TaskModel(
-                          category:_tabController.index,
-                          task_title: titleController.text,
-                          task_description: titleDescriptionController.text,
-                          task_date: date,start_time: startTime,end_time: endTime));
-                       print(result);
-                    }
-                      },
-                    child: Text("SUBMIT",style: TextStyle(color: Colors.white),)),
               )
             ],
           ),

@@ -30,15 +30,41 @@ class SqliteService {
     var connection = await database;
     return  connection!.query("Tasks");
   }
-  Future<List<TaskModel>> getTasks() async{
+
+  Future<List<TaskModel>> getIslamTasks() async{
     Database? db = await database;
     var model = await db?.rawQuery(
-        "SELECT * from Tasks");
+        "SELECT * from Tasks where category = 0");
+    List<TaskModel>? modelList =
+    model!.isNotEmpty ? model.map((c) => TaskModel.fromMap(c)).toList():[];
+    return modelList;
+  }
+  Future<List<TaskModel>> getFamilyTasks() async{
+    Database? db = await database;
+    var model = await db?.rawQuery(
+        "SELECT * from Tasks where category = 1");
+    List<TaskModel>? modelList =
+    model!.isNotEmpty ? model.map((c) => TaskModel.fromMap(c)).toList():[];
+    return modelList;
+  }
+  Future<List<TaskModel>> getWorkTasks() async{
+    Database? db = await database;
+    var model = await db?.rawQuery(
+        "SELECT * from Tasks where category = 2");
+    List<TaskModel>? modelList =
+    model!.isNotEmpty ? model.map((c) => TaskModel.fromMap(c)).toList():[];
+    return modelList;
+  }
+  Future<List<TaskModel>> getPersonalTasks() async{
+    Database? db = await database;
+    var model = await db?.rawQuery(
+        "SELECT * from Tasks where category = 3");
     List<TaskModel>? modelList =
     model!.isNotEmpty ? model.map((c) => TaskModel.fromMap(c)).toList():[];
     return modelList;
   }
 }
+
   /*Future<Database> initializeDB() async {
     String path = await getDatabasesPath();
 
