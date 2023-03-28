@@ -156,7 +156,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return FutureBuilder<List<TaskModel>>(
         future:   _sqliteService.getIslamTasks(),
         builder: (context, snapshot){
-        if(!snapshot.hasData) {
+        if(snapshot.hasData && snapshot.data?.isEmpty==true) {
           return Image.asset("assets/images/Islam.jpg");
         }else{
           var list =  snapshot.data;
@@ -180,7 +180,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return FutureBuilder<List<TaskModel>>(
       future:   _sqliteService.getFamilyTasks(),
       builder: (context, snapshot){
-        if(!snapshot.hasData ) {
+        if(snapshot.hasData && snapshot.data?.isEmpty==true) {
           return Image.asset("assets/images/Family.jpg");
         }else{
           var list =  snapshot.data;
@@ -206,7 +206,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return FutureBuilder<List<TaskModel>>(
       future:   _sqliteService.getWorkTasks(),
       builder: (context, snapshot){
-        if(!snapshot.hasData ) {
+        if(snapshot.hasData && snapshot.data?.isEmpty==true ) {
           return Image.asset("assets/images/Work.jpg");
         }else{
           var list =  snapshot.data;
@@ -232,7 +232,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return FutureBuilder<List<TaskModel>>(
       future:   _sqliteService.getPersonalTasks(),
       builder: (context, snapshot){
-        if(!snapshot.hasData && _sqliteService.getPersonalTasks() == 0 ) {
+        if(snapshot.hasData && snapshot.data?.isEmpty==true) {
           return Image.asset("assets/images/Work.jpg");
         }else{
           var list =  snapshot.data;

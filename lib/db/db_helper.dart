@@ -63,6 +63,48 @@ class SqliteService {
     model!.isNotEmpty ? model.map((c) => TaskModel.fromMap(c)).toList():[];
     return modelList;
   }
+
+  Future<List<TaskModel>> getTaskById(int? id) async{
+    Database? db = await database;
+    var model = await db?.rawQuery(
+        "SELECT * from Tasks where id = $id");
+    List<TaskModel>? modelList =
+    model!.isNotEmpty ? model.map((c) => TaskModel.fromMap(c)).toList():[];
+    return modelList;
+  }
+  Future<List<TaskModel>> deleteTask(int? id) async{
+    Database? db = await database;
+    var model = await db?.rawQuery(
+        "DELETE FROM Tasks WHERE  id = $id");
+    List<TaskModel>? modelList =
+    model!.isNotEmpty ? model.map((c) => TaskModel.fromMap(c)).toList():[];
+    return modelList;
+  }
+  Future<int?> updateTask(TaskModel taskModel) async{
+    Database? db = await database;
+    var result = db?.update("Tasks", taskModel.toMap(), where:  "${taskModel.id}=?",whereArgs: [{taskModel.id}]);
+   /* var model = await db?.rawQuery(
+        "INSERT WHERE ${taskModel.task_title} =? AND ${taskModel.task_description} =?"
+            "AND ${taskModel.start_time}=? AND ${taskModel.end_time}=? ",
+        [taskModel.task_title,taskModel.task_description,taskModel.start_time,taskModel.end_time]);
+    List<TaskModel>? modelList =
+    model!.isNotEmpty ? model.map((c) => TaskModel.fromMap(c)).toList():[];
+    return modelList;*/
+    return result;
+  }
+  Future<Future<int>?> updateTasks(TaskModel taskModel)async{
+    Database? db = await database;
+    var result = db?.rawUpdate("UPDATE Test SET ${taskModel.task_title}=?, WHERE ${taskModel.id}=?",[taskModel.task_title]);
+    return result;
+  }
+  setSelectedQoriIndex(int index) async {
+
+    /*String updateQuery = "update Tasks set is_selected=0; ";
+    int res = await _database!.rawUpdate(updateQuery);*/
+    String updateQuery = "update Tasks set is_selected=1 where id=$index";
+    int res = await _database!.rawUpdate(updateQuery);
+    return res;
+  }
 }
 
   /*Future<Database> initializeDB() async {

@@ -15,6 +15,7 @@ class ListItem extends StatefulWidget {
 
 class _ListItemState extends State<ListItem> {
   bool? isCompleted = false;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -23,7 +24,8 @@ class _ListItemState extends State<ListItem> {
           context,
           MaterialPageRoute(
               builder: (context) =>
-                  UpdatePage()
+                  UpdatePage(taskId: widget.taskList![widget.index1].id,
+                  )
           ),
         );
       },
