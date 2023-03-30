@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_timeline_calendar/timeline/model/calendar_options.dart';
+import 'package:flutter_timeline_calendar/timeline/model/datetime.dart';
 import 'package:flutter_timeline_calendar/timeline/model/day_options.dart';
 import 'package:flutter_timeline_calendar/timeline/model/headers_options.dart';
 import 'package:flutter_timeline_calendar/timeline/utils/calendar_types.dart';
@@ -24,21 +25,22 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   //final dbhelper =DatabaseHelper.instance;
   List<TaskModel>? taskModel;
+  var selectedDate = CalendarDateTime(year:DateTime.now().year, month: DateTime.now().month, day: DateTime.now().day,);
   var _sqliteService = SqliteService();
-  /*@override
+  TabController? tabController;
+  @override
   void initState() {
-    this._sqliteService= SqliteService();
-    this._sqliteService.initializeDB().whenComplete(() async {
-      //await _refreshNotes();
-      setState(() {});
-    });
+    // TODO: implement initState
+    tabController = TabController(length: 4, vsync: this,);
+    setState(() {
 
+    });
     super.initState();
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
-    TabController tabController = TabController(length: 4, vsync: this,);
+
     return  Scaffold(
       backgroundColor: bkground,
 
@@ -62,6 +64,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           children: [
             Container(
               child: TimelineCalendar(
+                dateTime: selectedDate,
                 calendarType: CalendarType.GREGORIAN,
                 calendarLanguage: "en",
                 calendarOptions: CalendarOptions(
@@ -85,10 +88,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     backgroundColor: bkground,
                     resetDateColor: tdOrange,
                     navigationColor: tdOrange,
-
                     headerTextColor: tdOrange),
                 onChangeDateTime: (datetime) {
-                  print(datetime.getDate());
+                  selectedDate = datetime;
+                  setState(() {
+                    
+                  });
                 },
               )
             ),
@@ -154,7 +159,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
    Widget _islamList()  {
     return FutureBuilder<List<TaskModel>>(
-        future:   _sqliteService.getIslamTasks(),
+        future:   _sqliteService.getIslamTasks(selectedDate.toString()),
         builder: (context, snapshot){
         if(snapshot.hasData && snapshot.data?.isEmpty==true) {
           return Image.asset("assets/images/Islam.jpg");
@@ -178,7 +183,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
    Widget _familyList()  {
     return FutureBuilder<List<TaskModel>>(
-      future:   _sqliteService.getFamilyTasks(),
+      future:   _sqliteService.getFamilyTasks(selectedDate.toString()),
       builder: (context, snapshot){
         if(snapshot.hasData && snapshot.data?.isEmpty==true) {
           return Image.asset("assets/images/Family.jpg");
@@ -204,7 +209,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
    Widget _workList()  {
     return FutureBuilder<List<TaskModel>>(
-      future:   _sqliteService.getWorkTasks(),
+      future:   _sqliteService.getWorkTasks(selectedDate.toString()),
       builder: (context, snapshot){
         if(snapshot.hasData && snapshot.data?.isEmpty==true ) {
           return Image.asset("assets/images/Work.jpg");
@@ -230,7 +235,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
    Widget _personalList()  {
     return FutureBuilder<List<TaskModel>>(
-      future:   _sqliteService.getPersonalTasks(),
+      future:   _sqliteService.getPersonalTasks(selectedDate.toString()),
       builder: (context, snapshot){
         if(snapshot.hasData && snapshot.data?.isEmpty==true) {
           return Image.asset("assets/images/Work.jpg");
