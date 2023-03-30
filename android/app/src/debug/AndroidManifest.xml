@@ -5,4 +5,16 @@
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
+   <!-- <queries>
+
+        &lt;!&ndash; Place inside the <queries> element. &ndash;&gt;
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+        </intent>
+
+        <package android:name="com.whatsapp" />
+        <package android:name="org.telegram.messenger" />
+    </queries>-->
 </manifest>
