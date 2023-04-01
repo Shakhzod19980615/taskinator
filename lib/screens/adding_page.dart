@@ -11,10 +11,11 @@ import 'package:taskinatoruz/screens/home_page.dart';
 
 import '../colors/colors.dart';
 import '../db/db_helper.dart';
+import '../widget/bottom_sheet.dart';
 
 class AddingPage extends StatefulWidget {
-  const AddingPage({Key? key}) : super(key: key);
-
+  const AddingPage({Key? key, this.savedTaskId}) : super(key: key);
+  final savedTaskId;
   @override
   State<AddingPage> createState() => _AddingPageState();
 }
@@ -26,12 +27,16 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
   final startTimeController = TextEditingController();
   final endTimeController = TextEditingController();
   final String dateNow = DateTime.now().toString();
-  int tabIndex = 0;
+  final savedTabIndex =TextEditingController() ;
+   int tabIndex = 0;
   String category = "";
   String date = "";
   String startTime = "";
   String endTime = "";
+
   bool? isSaved = false;
+  late int? saved;
+  TaskModel? taskById;
   //final dbhelper =DatabaseHelper.instance;
   late TabController _tabController;
   final _titleKey = GlobalKey<FormState>();
@@ -43,9 +48,23 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
     super.initState();
     _tabController = TabController(vsync: this, length: myTabs.length);
     initializeDateFormatting();
+    getList();
     //this._sqliteService= SqliteService();
   }
+  getList()async{
+    taskById =await _sqliteService.getTaskById(widget.savedTaskId);
+    titleController.text = taskById?.task_title??"";
+    dateController.text = taskById?.task_date??"";
+    titleDescriptionController.text = taskById?.task_description??"";
+    startTimeController.text = taskById?.start_time??"";
+    endTimeController.text = taskById?.end_time??"";
+    //tabIndex.text = taskById?.category??;
+   // savedTabIndex.text = taskById?.category??"";
+    //_tabController.index= taskById?.category??"";
+    setState(() {
 
+    });
+  }
   @override
   void dispose() {
     _tabController.dispose();
@@ -92,19 +111,27 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
 
           child: Column(
             children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 15,vertical: 15),
-                margin: EdgeInsets.only(top: 25,bottom: 30),
-                decoration: BoxDecoration(
-                    color: bottomNav,
-                    borderRadius: BorderRadius.circular(10)
-                ),
-                child: Row(
-                  children: [
-                    Text("Choose a task from your saved tasks list", style: TextStyle(fontSize: 14, color: Colors.white),),
-                    Spacer(),
-                    Icon(Icons.double_arrow,color: Colors.white,)
-                  ],
+              GestureDetector(
+                onTap: (){
+                  showModalBottomSheet(shape:RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight:Radius.circular(20) ),
+                  ), context: context, builder: (c)=> BottomSheetTask(
+                  ));
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15,vertical: 15),
+                  margin: EdgeInsets.only(top: 25,bottom: 30),
+                  decoration: BoxDecoration(
+                      color: bottomNav,
+                      borderRadius: BorderRadius.circular(10)
+                  ),
+                  child: Row(
+                    children: [
+                      Text("Choose a task from your saved tasks list", style: TextStyle(fontSize: 14, color: Colors.white),),
+                      Spacer(),
+                      Icon(Icons.double_arrow,color: Colors.white,)
+                    ],
+                  ),
                 ),
               ),
               Align(
@@ -245,27 +272,35 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
                   color: Color(0xFFf1f5f0),
                   borderRadius: BorderRadius.circular(10)
               ),
-                child: CheckboxListTileFormField(
-                  title: Text("Save this task for future use",style: TextStyle(color: Colors.black,
-                      fontWeight: FontWeight.w500),),
-                    onSaved: (bool? isSaved){
-                      isSaved = isSaved;
-                    },
-                    onChanged: ( value){
-                      setState(() {
-                        value = isSaved!;
-                      });
-                    }),
+                child: Row(
+                  children:<Widget> [
+                    Checkbox(
+                        onChanged: (bool? value){
+                          setState(() {
+                            isSaved = value!;
+                          });
+                        },
+                      value: this.isSaved,),
+                    Text("Save this task for future use",style: TextStyle(color: Colors.black,
+                        fontWeight: FontWeight.w500),),
+                  ],
+                ),
               ),
               InkWell(
                 onTap: ()async {
                   print("insert");
+
+                  if(isSaved == false ){
+                    saved = 0;
+                  }else{
+                    saved = 1;
+                  }
                   if(_titleKey.currentState!.validate()){
                     var result = await _sqliteService.insertData(TaskModel(
                         category:_tabController.index,
                         task_title: titleController.text,
                         task_description: titleDescriptionController.text,
-                        task_date: date,start_time: startTime,end_time: endTime));
+                        task_date: date,start_time: startTime,end_time: endTime,isSaved: saved));
                     print(result);
                     Navigator.push(
                       context,

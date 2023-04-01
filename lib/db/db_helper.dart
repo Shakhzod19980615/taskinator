@@ -15,7 +15,7 @@ class SqliteService {
   _onCreatingDatabase(Database database, int version) async{
     await database.execute(
         "CREATE TABLE Tasks(id INTEGER PRIMARY KEY, category INTEGER, task_title TEXT,"
-            "task_description TEXT, task_date TEXT, start_time TEXT, end_time TEXT)");
+            "task_description TEXT, task_date TEXT, start_time TEXT, end_time TEXT, isSaved INTEGER)");
   }
   Future<Database?> get database async{
     if(_database != null) return _database;
@@ -65,6 +65,15 @@ class SqliteService {
     return modelList;
   }
 
+  Future<List<TaskModel>> getSavedTasks() async{
+    Database? db = await database;
+    var model = await db?.rawQuery(
+        "SELECT * from Tasks where isSaved = 1 "
+    );
+    List<TaskModel>? modelList =
+    model!.isNotEmpty ? model.map((c) => TaskModel.fromMap(c)).toList():[];
+    return modelList;
+  }
   Future<TaskModel> getTaskById(int? id) async{
     Database? db = await database;
     var model = await db?.rawQuery(
