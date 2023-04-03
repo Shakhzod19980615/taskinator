@@ -21,10 +21,10 @@ class _SavedListItemState extends State<SavedListItem> {
     if(taskCategory.toString() =="0"){
       _taskCategory = "Islam";
     }else if(taskCategory.toString() == "1"){
-      _taskCategory = "Work";
+      _taskCategory = "Family";
 
     }else if(taskCategory.toString() =="2"){
-      _taskCategory = "Family";
+      _taskCategory = "Work";
     }else{
       _taskCategory = "Personal";
     }

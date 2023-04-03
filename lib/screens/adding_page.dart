@@ -8,6 +8,7 @@ import 'package:taskinatoruz/db/database_helper.dart';
 import 'package:taskinatoruz/main.dart';
 import 'package:taskinatoruz/model/task_model.dart';
 import 'package:taskinatoruz/screens/home_page.dart';
+import 'package:taskinatoruz/utils/notification_service.dart';
 
 import '../colors/colors.dart';
 import '../db/db_helper.dart';
@@ -33,7 +34,6 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
   String date = "";
   String startTime = "";
   String endTime = "";
-
   bool? isSaved = false;
   late int? saved;
   TaskModel? taskById;
@@ -41,7 +41,7 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
   late TabController _tabController;
   final _titleKey = GlobalKey<FormState>();
   var _sqliteService = SqliteService();
-
+  late final NotificationService service;
 
   @override
   void initState() {
@@ -49,8 +49,20 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
     _tabController = TabController(vsync: this, length: myTabs.length);
     initializeDateFormatting();
     getList();
+    service = NotificationService();
+    service.initNotification();
+    listenNotification();
     //this._sqliteService= SqliteService();
   }
+  void listenNotification()=>service.onNotificationClick.stream.listen((onNotificationListener));
+
+  void onNotificationListener (String? payload){
+    if(payload !=null && payload.isNotEmpty){
+      print("payload $payload");
+
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
+    }
+}
   getList()async{
     taskById =await _sqliteService.getTaskById(widget.savedTaskId);
     titleController.text = taskById?.task_title??"";
@@ -58,6 +70,8 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
     titleDescriptionController.text = taskById?.task_description??"";
     startTimeController.text = taskById?.start_time??"";
     endTimeController.text = taskById?.end_time??"";
+    tabIndex = taskById?.category??0;
+    _tabController.index = tabIndex;
     //tabIndex.text = taskById?.category??;
    // savedTabIndex.text = taskById?.category??"";
     //_tabController.index= taskById?.category??"";
@@ -65,16 +79,17 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
 
     });
   }
+
   @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
   }
-  static const List<Tab> myTabs = <Tab>[
-    Tab(text: 'Islam'),
-    Tab(text: 'Family'),
-    Tab(text: 'Work'),
-    Tab(text: 'Personal'),
+   List<Tab> myTabs = <Tab>[
+    Tab(child: Text("Islam",style: TextStyle(fontSize: 16),),),
+    Tab(child: Text("Family",style: TextStyle(fontSize: 16),),),
+    Tab(child: Text("Work",style: TextStyle(fontSize: 16),),),
+    Tab(child: Text("Personal",style: TextStyle(fontSize: 16),),),
   ];
 
   @override
@@ -138,17 +153,22 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
                   alignment: Alignment.centerLeft,
                   child: Text("Select category*", style: TextStyle(fontSize: 14,color: Colors.orange),)),
               Container(
-
                 margin: EdgeInsets.only(top: 25,bottom: 30),
                 decoration: BoxDecoration(
                     color: Color(0xFFf7cfa6),
                     borderRadius: BorderRadius.circular(10)
                 ),
                 child: TabBar(
+                  indicatorSize: TabBarIndicatorSize.label,
+                  isScrollable: true,
+                  padding: EdgeInsets.zero,
+                  indicatorPadding: EdgeInsets.zero,
+                  //labelPadding: EdgeInsets.zero,
                   controller: _tabController,
                   tabs: myTabs,
                   labelColor: Colors.white,
                   unselectedLabelColor: Colors.orange,
+
                   /*child: Row(
                     children: <Widget>[
                     ButtonsTabBar(
@@ -288,7 +308,7 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
               ),
               InkWell(
                 onTap: ()async {
-                  print("insert");
+                  print(dateNow);
 
                   if(isSaved == false ){
                     saved = 0;
@@ -310,6 +330,7 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
                       ),
                     );
                   }
+                 await NotificationService().showNotification(title: titleController.text,body: titleDescriptionController.text,id: 0);
                 },
                 child: Container(
                   decoration: BoxDecoration(
