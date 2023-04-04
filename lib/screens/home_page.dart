@@ -7,12 +7,14 @@ import 'package:flutter_timeline_calendar/timeline/model/headers_options.dart';
 import 'package:flutter_timeline_calendar/timeline/utils/calendar_types.dart';
 import 'package:flutter_timeline_calendar/timeline/widget/timeline_calendar.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:intl/intl.dart';
 import 'package:taskinatoruz/colors/colors.dart';
 import 'package:taskinatoruz/screens/update_page.dart';
 
 import '../db/database_helper.dart';
 import '../db/db_helper.dart';
 import '../model/task_model.dart';
+import '../utils/notification_service.dart';
 import '../widget/list_item.dart';
 
 class HomePage extends StatefulWidget {
@@ -28,14 +30,29 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   var selectedDate = CalendarDateTime(year:DateTime.now().year, month: DateTime.now().month, day: DateTime.now().day,);
   var _sqliteService = SqliteService();
   TabController? tabController;
+  late final NotificationService service;
+  final String dateNow = DateTime.now().toString();
   @override
   void initState() {
     // TODO: implement initState
     tabController = TabController(length: 4, vsync: this,);
+    service = NotificationService();
+    service.initNotification();
+    service.notificationDetails();
+    listenNotification();
     setState(() {
 
     });
     super.initState();
+  }
+  void listenNotification()=>service.onNotificationClick.stream.listen((onNotificationListener));
+
+  void onNotificationListener (String? payload){
+    if(payload !=null && payload.isNotEmpty){
+      print("payload $payload");
+
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
+    }
   }
 
   @override
@@ -165,6 +182,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           return Image.asset("assets/images/Islam.jpg");
         }else{
           var list =  snapshot.data;
+          var dateAndTime ="${list?.first.task_date} ${list?.first.start_time} ";
+          DateTime tempDate = DateFormat("y-MM-dd hh:mm").parse(dateAndTime);
+          print(tempDate);
+          //NotificationService().nextInstanceOf(list?.first.start_time);
+           //if(dateNow == dateAndTime){
+            NotificationService().showScheduledNotification(title: list?.first.task_title,
+                body: "Start with Bismillah", time: tempDate);
+          // }
           return  Container(
             margin: EdgeInsets.only(top: 10,bottom: 10),
             padding: EdgeInsets.only(top: 10),

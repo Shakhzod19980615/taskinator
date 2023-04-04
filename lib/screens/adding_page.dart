@@ -51,18 +51,18 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
     getList();
     service = NotificationService();
     service.initNotification();
-    listenNotification();
+    //listenNotification();
     //this._sqliteService= SqliteService();
   }
-  void listenNotification()=>service.onNotificationClick.stream.listen((onNotificationListener));
+  //void listenNotification()=>service.onNotificationClick.stream.listen((onNotificationListener));
 
-  void onNotificationListener (String? payload){
+  /*void onNotificationListener (String? payload){
     if(payload !=null && payload.isNotEmpty){
       print("payload $payload");
 
       Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
     }
-}
+}*/
   getList()async{
     taskById =await _sqliteService.getTaskById(widget.savedTaskId);
     titleController.text = taskById?.task_title??"";
@@ -308,7 +308,7 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
               ),
               InkWell(
                 onTap: ()async {
-                  print(dateNow);
+                  //print(dateNow);
 
                   if(isSaved == false ){
                     saved = 0;
@@ -316,12 +316,12 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
                     saved = 1;
                   }
                   if(_titleKey.currentState!.validate()){
-                    var result = await _sqliteService.insertData(TaskModel(
+                     await _sqliteService.insertData(TaskModel(
                         category:_tabController.index,
                         task_title: titleController.text,
                         task_description: titleDescriptionController.text,
                         task_date: date,start_time: startTime,end_time: endTime,isSaved: saved));
-                    print(result);
+                    //print(result);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -330,7 +330,7 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
                       ),
                     );
                   }
-                 await NotificationService().showNotification(title: titleController.text,body: titleDescriptionController.text,id: 0);
+                 //await NotificationService().showNotification(title: titleController.text,body: titleDescriptionController.text,id: 0);
                 },
                 child: Container(
                   decoration: BoxDecoration(
