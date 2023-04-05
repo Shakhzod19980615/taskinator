@@ -182,14 +182,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           return Image.asset("assets/images/Islam.jpg");
         }else{
           var list =  snapshot.data;
-          var dateAndTime ="${list?.first.task_date} ${list?.first.start_time} ";
-          DateTime tempDate = DateFormat("y-MM-dd hh:mm").parse(dateAndTime);
-          print(tempDate);
+         /* var dateAndTime ="${list?.first.task_date} ${list?.first.start_time} ";
+          DateTime tempDate = DateFormat.jm().parse(dateAndTime);*/
+          //print(tempDate);
           //NotificationService().nextInstanceOf(list?.first.start_time);
            //if(dateNow == dateAndTime){
-            NotificationService().showScheduledNotification(title: list?.first.task_title,
+           /* NotificationService().showScheduledNotification(title: list?.first.task_title,
                 body: "Start with Bismillah", time: tempDate);
-          // }
+          // }*/
           return  Container(
             margin: EdgeInsets.only(top: 10,bottom: 10),
             padding: EdgeInsets.only(top: 10),
@@ -199,7 +199,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               shrinkWrap: true,
                 itemCount: list?.length ??0,
                 itemBuilder: (context,index){
-                  return ListItem(taskList: list,index1: index,);
+
+                TaskModel task = list![index];
+                DateTime date = DateFormat("HH:mm").parse(task.start_time.toString());
+                var myTime = DateFormat("HH:mm").format(date);
+                service.showScheduledNotification(
+                  int.parse(myTime.toString().split(":")[0]),
+                  int.parse(myTime.toString().split(":")[1]),
+                  task
+                );
+                return ListItem(taskList: list,index1: index,);
                 }),
           );
         }

@@ -1,9 +1,11 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 import '../db/db_helper.dart';
+import '../model/task_model.dart';
 
 class NotificationService{
   final FlutterLocalNotificationsPlugin notificationsPlugin =
@@ -25,7 +27,7 @@ class NotificationService{
     );
     await notificationsPlugin.initialize(initializationSettings,
     onDidReceiveNotificationResponse: (NotificationResponse notificationResponse) async{});
-    tz.initializeTimeZones();
+    _configureLocalTimeZone();
   }
 
 
@@ -47,18 +49,29 @@ class NotificationService{
 } ) async{
   return await notificationsPlugin.show(id, title, body, notificationDetails(),);
 }
-  Future<void> showScheduledNotification({id,  title,
-     body, payLoad, time}) async{
+  Future<void> showScheduledNotification(int hour,int minutes,TaskModel taskModel) async{
 
     return await notificationsPlugin.zonedSchedule(
-        id,
-        title,
-        body,
-        tz.TZDateTime.from(time as DateTime,tz.local),
+        0,
+        "title",
+        "body",
+        _convertTime(hour,minutes),
+        //tz.TZDateTime.now(tz.local),
         /*tz.TZDateTime.local(DateTime.now().year,DateTime.now().month,DateTime.now().day,
             DateTime.now().hour+5,DateTime.now().minute+1),*/
         notificationDetails(), uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
         androidAllowWhileIdle: true);
+  }
+  tz.TZDateTime _convertTime(int hour,int minutes){
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime scheduleDate = 
+        tz.TZDateTime(tz.local, now.year,now.month,now.day,hour,minutes);
+    return scheduleDate;
+  }
+  Future <void> _configureLocalTimeZone() async{
+    tz.initializeTimeZones();
+    final String timeZone = await FlutterNativeTimezone.getLocalTimezone();
+    tz.setLocalLocation(tz.getLocation(timeZone));
   }
   Future<void>   showNotificationWithPayLoad ({
     int id=0, String? title, String? body, String? payLoad
@@ -76,6 +89,8 @@ class NotificationService{
     return tz.TZDateTime(
         tz.getLocation(name), int.parse(taskDate!), now.millisecond);
   }
+
+
 }
 
 Map timezoneNames = {
