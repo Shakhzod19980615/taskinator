@@ -14,7 +14,7 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   String sURLTelegram = "https://t.me/abdullohibnbahrom";
-  String sURLMail = "shakhzod_bakhromov@mail.ru";
+  String sURLMail = "https://wa.me/447752963000";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +22,7 @@ class _SettingsPageState extends State<SettingsPage> {
       appBar: AppBar(
         title: Container(
             alignment: Alignment.centerLeft,
-            child: Text("Settings & Help", style: TextStyle(fontSize: 20,color: bottomNav,fontWeight: FontWeight.w500),)),
+            child: Text("Sozlamalar & Yordam", style: TextStyle(fontSize: 20,color: bottomNav,fontWeight: FontWeight.w500),)),
         elevation: 0,
         backgroundColor: bkground,
       ),
@@ -70,10 +70,10 @@ class _SettingsPageState extends State<SettingsPage> {
                 margin: EdgeInsets.only(top: 10),
                 child: Row(
                   children: [
-                    Icon(Icons.mail, color: Colors.blue,size: 30,),
+                    Image.asset("assets/images/whatsapp_icon.png",height: 30,width: 30,),
                     Container(
                         margin: EdgeInsets.only(left: 10),
-                        child: Text("Email", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500,color: bottomNav),)),
+                        child: Text("Whatsapp", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500,color: bottomNav),)),
                   ],
                 ),
               ),
@@ -90,7 +90,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   Container(
                       margin:EdgeInsets.only(right: 10),
                       child: Icon(Icons.settings,color: Colors.white,)),
-                  Expanded(child: Text("More settings and customizations are coming soon inShaaAllah", style: TextStyle(fontSize: 14, color: Colors.white),)),
+                  Expanded(child: Text("Tez orada boshqa sozlamalar va moslashtirishlar bo'ladi inShaaAllah", style: TextStyle(fontSize: 14, color: Colors.white),)),
 
 
                 ],

@@ -65,17 +65,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         title:Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-          Icon(Icons.line_axis_sharp,color: tdOrange,),
-            Text("Todays progress",style: TextStyle(fontSize: 15,color: tdOrange),),
+          //Icon(Icons.line_axis_sharp,color: tdOrange,),
+            Text("Taskinatoruz",style: TextStyle(fontSize: 15,color: tdOrange),),
           ],
         ),
         elevation: 0,
         backgroundColor: bkground,
       ),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        margin: EdgeInsets.only(left: 0,right: 0),
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -109,7 +106,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 onChangeDateTime: (datetime) {
                   selectedDate = datetime;
                   setState(() {
-                    
+
                   });
                 },
               )
@@ -126,25 +123,25 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       child: Column(
                         children: [
                           Icon(Icons.mosque,color: tdOrange,),
-                          Text("Islam",style: TextStyle(fontSize: 12,color: tdOrange),)
+                          Text("Islom",style: TextStyle(fontSize: 12,color: tdOrange),)
                         ],),),
                     Tab(
                       child: Column(
                         children: [
                           Icon(Icons.family_restroom,color: tdOrange,),
-                          Text("Family",style: TextStyle(fontSize: 12,color: tdOrange),)
+                          Text("Oila",style: TextStyle(fontSize: 12,color: tdOrange),)
                         ],),),
                     Tab(
                       child: Column(
                         children: [
                           Icon(Icons.work,color: tdOrange,),
-                          Text("Work",style: TextStyle(fontSize: 12,color: tdOrange),)
+                          Text("Ish",style: TextStyle(fontSize: 12,color: tdOrange),)
                         ],),),
                     Tab(
                       child: Column(
                         children: [
                           Icon(Icons.person,color: tdOrange,),
-                          Text("Personal",style: TextStyle(fontSize: 12,color: tdOrange),)
+                          Text("Shaxsiy",style: TextStyle(fontSize: 12,color: tdOrange),)
                         ],),)
                   ],
                 ),
@@ -182,14 +179,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           return Image.asset("assets/images/Islam.jpg");
         }else{
           var list =  snapshot.data;
-         /* var dateAndTime ="${list?.first.task_date} ${list?.first.start_time} ";
-          DateTime tempDate = DateFormat.jm().parse(dateAndTime);*/
-          //print(tempDate);
-          //NotificationService().nextInstanceOf(list?.first.start_time);
-           //if(dateNow == dateAndTime){
-           /* NotificationService().showScheduledNotification(title: list?.first.task_title,
-                body: "Start with Bismillah", time: tempDate);
-          // }*/
           return  Container(
             margin: EdgeInsets.only(top: 10,bottom: 10),
             padding: EdgeInsets.only(top: 10),
@@ -232,6 +221,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 shrinkWrap: true,
                 itemCount: list?.length ??0,
                 itemBuilder: (context,index){
+                  TaskModel task = list![index];
+                  DateTime date = DateFormat("HH:mm").parse(task.start_time.toString());
+                  var myTime = DateFormat("HH:mm").format(date);
+                  service.showScheduledNotification(
+                      int.parse(myTime.toString().split(":")[0]),
+                      int.parse(myTime.toString().split(":")[1]),
+                      task
+                  );
                   return ListItem(taskList: list,index1: index,);
                 }),
           );
@@ -258,6 +255,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 shrinkWrap: true,
                 itemCount: list?.length ??0,
                 itemBuilder: (context,index){
+                  TaskModel task = list![index];
+                  DateTime date = DateFormat("HH:mm").parse(task.start_time.toString());
+                  var myTime = DateFormat("HH:mm").format(date);
+                  service.showScheduledNotification(
+                      int.parse(myTime.toString().split(":")[0]),
+                      int.parse(myTime.toString().split(":")[1]),
+                      task
+                  );
                   return ListItem(taskList: list,index1: index,);
                 }),
           );
@@ -284,6 +289,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 shrinkWrap: true,
                 itemCount: list?.length ??0,
                 itemBuilder: (context,index){
+                  TaskModel task = list![index];
+                  DateTime date = DateFormat("HH:mm").parse(task.start_time.toString());
+                  var myTime = DateFormat("HH:mm").format(date);
+                  service.showScheduledNotification(
+                      int.parse(myTime.toString().split(":")[0]),
+                      int.parse(myTime.toString().split(":")[1]),
+                      task
+                  );
                   return ListItem(taskList: list,index1: index,);
                 }),
           );

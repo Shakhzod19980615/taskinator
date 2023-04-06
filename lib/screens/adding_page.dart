@@ -86,10 +86,10 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
     super.dispose();
   }
    List<Tab> myTabs = <Tab>[
-    Tab(child: Text("Islam",style: TextStyle(fontSize: 16),),),
-    Tab(child: Text("Family",style: TextStyle(fontSize: 16),),),
-    Tab(child: Text("Work",style: TextStyle(fontSize: 16),),),
-    Tab(child: Text("Personal",style: TextStyle(fontSize: 16),),),
+    Tab(child: Text("Islom",style: TextStyle(fontSize: 18),),),
+    Tab(child: Text("Oila",style: TextStyle(fontSize: 18),),),
+    Tab(child: Text("Ish",style: TextStyle(fontSize: 18),),),
+    Tab(child: Text("Shaxsiy",style: TextStyle(fontSize: 18),),),
   ];
 
   @override
@@ -99,7 +99,7 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
       appBar: AppBar(
         title: Row(
           children: [
-            Text("Add a new task", style: TextStyle(fontSize: 20,color: bottomNav,fontWeight: FontWeight.w500),),
+            Text("Yangi vazifa qo'shing", style: TextStyle(fontSize: 20,color: bottomNav,fontWeight: FontWeight.w500),),
             Spacer(),
             InkWell(
                 onTap: (){
@@ -142,8 +142,7 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
                   ),
                   child: Row(
                     children: [
-                      Text("Choose a task from your saved tasks list", style: TextStyle(fontSize: 14, color: Colors.white),),
-                      Spacer(),
+                      Expanded(child: Text("Saqlangan vazifalar ro'yxatidan vazifani tanlang", style: TextStyle(fontSize: 14, color: Colors.white),)),
                       Icon(Icons.double_arrow,color: Colors.white,)
                     ],
                   ),
@@ -151,8 +150,9 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
               ),
               Align(
                   alignment: Alignment.centerLeft,
-                  child: Text("Select category*", style: TextStyle(fontSize: 14,color: Colors.orange),)),
+                  child: Text("Kategoriyani tanlang*", style: TextStyle(fontSize: 14,color: Colors.orange),)),
               Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
                 margin: EdgeInsets.only(top: 25,bottom: 30),
                 decoration: BoxDecoration(
                     color: Color(0xFFf7cfa6),
@@ -199,7 +199,7 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
                     controller: titleController,
                     validator: (value){
                       if(value ==null || value.isEmpty ){
-                          return 'Please enter title';
+                          return 'Iltimos, sarlavhani kiriting';
                       }
                       return null;
                     },
@@ -210,7 +210,7 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
                       disabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: CupertinoColors.inactiveGray)
                       ),
-                      labelText: 'Task title*',
+                      labelText: 'Vazifa nomi*',
                       labelStyle: TextStyle(color:  Colors.orange)
                     ),
                   ),
@@ -227,7 +227,7 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
                       disabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: CupertinoColors.inactiveGray)
                       ),
-                      labelText: 'Task description',
+                      labelText: 'Vazifa tavsifi',
                       labelStyle: TextStyle(color:  Colors.orange)
                   ),
                 ),
@@ -240,7 +240,7 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
                   type: DateTimePickerType.date,
                   controller: dateController,
                   icon: Icon(Icons.calendar_month,color: Colors.orange,),
-                  dateLabelText: "Date",
+                  dateLabelText: "Sana",
                   cursorColor: Colors.orange,
                   firstDate: DateTime(2000),
                   lastDate: DateTime(3000),
@@ -254,12 +254,12 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
                 children: [
                   Container(
                     height: 90,
-                    width: MediaQuery.of(context).size.width*0.35,
+                    width: MediaQuery.of(context).size.width*0.4,
                     child: DateTimePicker(
                         type: DateTimePickerType.time,
                         controller: startTimeController,
                         icon: Icon(Icons.access_time_rounded,color: Colors.orange,),
-                        timeLabelText: "Start time",
+                        timeLabelText: "Boshlanish vaqti",
                         cursorColor: Colors.orange,
                         use24HourFormat: true,
                         locale: Locale("pt","BR"),
@@ -276,7 +276,7 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
                         type: DateTimePickerType.time,
                         controller: endTimeController,
                         icon: Icon(Icons.access_time_rounded,color: Colors.orange,),
-                        timeLabelText: "End time",
+                        timeLabelText: "Tugash vaqti",
                         cursorColor: Colors.orange,
                         use24HourFormat: true,
                         locale: Locale("pt","BR"),
@@ -301,8 +301,10 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
                           });
                         },
                       value: this.isSaved,),
-                    Text("Save this task for future use",style: TextStyle(color: Colors.black,
-                        fontWeight: FontWeight.w500),),
+                    Expanded(
+                      child: Text("Kelajakda foydalanish uchun ushbu vazifani saqlang",style: TextStyle(color: Colors.black,
+                          fontWeight: FontWeight.w500),),
+                    ),
                   ],
                 ),
               ),
@@ -337,9 +339,9 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
                       color: Colors.orange,
                       borderRadius: BorderRadius.circular(10)
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.38,vertical: 20),
+                  padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.35,vertical: 20),
                   margin: EdgeInsets.only(top: 20),
-                  child: Text("SUBMIT",style: TextStyle(color: Colors.white),),
+                  child: Text("SAQLASH",style: TextStyle(color: Colors.white),),
                 ),
               )
             ],

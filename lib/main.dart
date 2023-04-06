@@ -44,7 +44,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
  int index = 0;
- final bottomItems = <Widget>[HomePage(),TipsPage(),SettingsPage(),AddingPage()];
+ final bottomItems = <Widget>[HomePage(),SettingsPage(),AddingPage()];
 
 
 
@@ -73,9 +73,8 @@ class _MyHomePageState extends State<MyHomePage> {
         color: Colors.black,
         gap: 3,
         tabs: const [
-          GButton(icon: Icons.home,text: "Home",),
-          GButton(icon: Icons.tips_and_updates,text: "Tips",),
-          GButton(icon: Icons.settings,text: "Settings",),
+          GButton(icon: Icons.home,text: "Asosiy",),
+          GButton(icon: Icons.settings,text: "Sozlamalar",),
           GButton(icon: Icons.add_circle_outline,iconColor: Colors.orange,),
         ],
 

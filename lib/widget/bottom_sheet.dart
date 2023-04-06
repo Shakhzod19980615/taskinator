@@ -19,7 +19,7 @@ class BottomSheetTask extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text("Choose from the list",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700),),
+                Text("Ro'yxatdan tanlang",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700),),
                 Spacer(),
                 GestureDetector(
                     onTap: (){
@@ -31,12 +31,14 @@ class BottomSheetTask extends StatelessWidget {
             Container(
                 alignment: AlignmentDirectional.centerStart,
                 margin: EdgeInsets.symmetric(vertical: 10),
-                child: Text("Tap on the tasks to select")),
+                child: Text("Tanlash uchun vazifalar ustiga bosing")),
             FutureBuilder<List<TaskModel>>(
                 future:  _sqliteService.getSavedTasks(),
                 builder: (context,snapshot){
-                  if(!snapshot.hasData){
-                    return Image.asset("assets/images/Work.jpg");
+                  if(snapshot.hasData){
+                    return Container(
+                        margin: EdgeInsets.symmetric(vertical: 20),
+                        child: Text("Saqlangan vazifa yo'q",style: TextStyle(fontSize: 30,fontWeight: FontWeight.w500),));
                   }else{
                     var list =  snapshot.data;
                     return Container(

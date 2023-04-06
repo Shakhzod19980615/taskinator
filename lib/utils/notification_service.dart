@@ -13,7 +13,7 @@ class NotificationService{
   final BehaviorSubject<String?> onNotificationClick = BehaviorSubject();
   Future<void> initNotification() async{
     AndroidInitializationSettings initializationSettingsAndroid =
-        const AndroidInitializationSettings("@drawable/flutter_icon");
+        const AndroidInitializationSettings("@drawable/todo_icon");
     var initializationSettingsIOS = DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
@@ -52,9 +52,9 @@ class NotificationService{
   Future<void> showScheduledNotification(int hour,int minutes,TaskModel taskModel) async{
 
     return await notificationsPlugin.zonedSchedule(
-        0,
-        "title",
-        "body",
+        taskModel.id!!,
+        taskModel.task_title,
+        "start with Bismillah :)",
         _convertTime(hour,minutes),
         //tz.TZDateTime.now(tz.local),
         /*tz.TZDateTime.local(DateTime.now().year,DateTime.now().month,DateTime.now().day,
@@ -83,12 +83,12 @@ class NotificationService{
       onNotificationClick.add(payload);
     }
   }
- tz.TZDateTime nextInstanceOf(String? taskDate) {
+/* tz.TZDateTime nextInstanceOf(String? taskDate) {
     var name = timezoneNames[DateTime.now().timeZoneOffset.inMilliseconds];
     final tz.TZDateTime now = tz.TZDateTime.now(tz.getLocation(name));
     return tz.TZDateTime(
         tz.getLocation(name), int.parse(taskDate!), now.millisecond);
-  }
+  }*/
 
 
 }
