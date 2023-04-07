@@ -54,7 +54,7 @@ class NotificationService{
     return await notificationsPlugin.zonedSchedule(
         taskModel.id!!,
         taskModel.task_title,
-        "start with Bismillah :)",
+        " Bismillah bilan boshlang :)",
         _convertTime(hour,minutes),
         //tz.TZDateTime.now(tz.local),
         /*tz.TZDateTime.local(DateTime.now().year,DateTime.now().month,DateTime.now().day,

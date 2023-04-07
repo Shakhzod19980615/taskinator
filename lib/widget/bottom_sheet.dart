@@ -35,7 +35,7 @@ class BottomSheetTask extends StatelessWidget {
             FutureBuilder<List<TaskModel>>(
                 future:  _sqliteService.getSavedTasks(),
                 builder: (context,snapshot){
-                  if(snapshot.hasData){
+                  if(!snapshot.hasData){
                     return Container(
                         margin: EdgeInsets.symmetric(vertical: 20),
                         child: Text("Saqlangan vazifa yo'q",style: TextStyle(fontSize: 30,fontWeight: FontWeight.w500),));

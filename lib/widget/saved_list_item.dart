@@ -19,14 +19,14 @@ class _SavedListItemState extends State<SavedListItem> {
   Widget build(BuildContext context) {
     int? taskCategory = widget.savedTaskList?[widget.savedTaskIndex].category?.toInt();
     if(taskCategory.toString() =="0"){
-      _taskCategory = "Islam";
+      _taskCategory = "Ibodatlar";
     }else if(taskCategory.toString() == "1"){
-      _taskCategory = "Family";
+      _taskCategory = "Oila";
 
     }else if(taskCategory.toString() =="2"){
-      _taskCategory = "Work";
+      _taskCategory = "Ish";
     }else{
-      _taskCategory = "Personal";
+      _taskCategory = "Shaxsiy";
     }
    /* switch(widget.savedTaskList?.first.category??0){
       case 0 : taskCategory = "Islam";
@@ -62,7 +62,7 @@ class _SavedListItemState extends State<SavedListItem> {
           children: [
             Row(
               children: [
-                Text("Name",style: TextStyle(fontSize: 14,color: Colors.white),),
+                Text("Vazifa nomi",style: TextStyle(fontSize: 14,color: Colors.white),),
                 Container(
                     margin: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
                     child: Text("-",style: TextStyle(fontSize: 14,color: Colors.white),)),
@@ -71,7 +71,7 @@ class _SavedListItemState extends State<SavedListItem> {
             ),
             Row(
               children: [
-                Text("Category",style: TextStyle(fontSize: 14,color: Colors.white)),
+                Text("Kategoriya",style: TextStyle(fontSize: 14,color: Colors.white)),
                 Container(margin: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
                     child: Text("-",style: TextStyle(fontSize: 14,color: Colors.white),)),
                 Text(_taskCategory,style: TextStyle(fontSize: 14,color: Colors.white),)
@@ -79,7 +79,7 @@ class _SavedListItemState extends State<SavedListItem> {
             ),
             Row(
               children: [
-                Text("Start time",style: TextStyle(fontSize: 14,color: Colors.white)),
+                Text("Boshlanish vaqti",style: TextStyle(fontSize: 14,color: Colors.white)),
                 Container(margin: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
                     child: Text("-",style: TextStyle(fontSize: 14,color: Colors.white),)),
                 Text(widget.savedTaskList?[widget.savedTaskIndex].start_time??"",style: TextStyle(fontSize: 14,color: Colors.white),)
@@ -87,7 +87,7 @@ class _SavedListItemState extends State<SavedListItem> {
             ),
             Row(
               children: [
-                Text("End time",style: TextStyle(fontSize: 14,color: Colors.white)),
+                Text("Tugash vaqti",style: TextStyle(fontSize: 14,color: Colors.white)),
                 Container(margin: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
                     child: Text("-",style: TextStyle(fontSize: 14,color: Colors.white),)),
                 Text(widget.savedTaskList?[widget.savedTaskIndex].end_time??"",style: TextStyle(fontSize: 14,color: Colors.white),)

@@ -62,13 +62,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       backgroundColor: bkground,
 
       appBar: AppBar(
-        title:Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-          //Icon(Icons.line_axis_sharp,color: tdOrange,),
-            Text("Taskinatoruz",style: TextStyle(fontSize: 15,color: tdOrange),),
-          ],
-        ),
+        title:Container(
+            alignment: Alignment.center,
+            child: Text("Taskinatoruz",style: TextStyle(fontSize: 15,color: tdOrange),)),
         elevation: 0,
         backgroundColor: bkground,
       ),
@@ -123,7 +119,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       child: Column(
                         children: [
                           Icon(Icons.mosque,color: tdOrange,),
-                          Text("Islom",style: TextStyle(fontSize: 12,color: tdOrange),)
+                          Text("Ibodatlar",style: TextStyle(fontSize: 12,color: tdOrange),)
                         ],),),
                     Tab(
                       child: Column(
@@ -149,7 +145,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ),
             Container(
               width: double.maxFinite,
-              height: 350,
+              height: MediaQuery.of(context).size.height*0.4,
               padding: EdgeInsets.zero,
               margin: EdgeInsets.only(left: 10,right: 10,),
               child: TabBarView(
@@ -277,7 +273,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       future:   _sqliteService.getPersonalTasks(selectedDate.toString()),
       builder: (context, snapshot){
         if(snapshot.hasData && snapshot.data?.isEmpty==true) {
-          return Image.asset("assets/images/Work.jpg");
+          return Image.asset("assets/images/Personal.jpg");
         }else{
           var list =  snapshot.data;
           return  Container(

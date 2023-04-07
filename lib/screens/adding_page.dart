@@ -86,7 +86,7 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
     super.dispose();
   }
    List<Tab> myTabs = <Tab>[
-    Tab(child: Text("Islom",style: TextStyle(fontSize: 18),),),
+    Tab(child: Text("Ibodatlar",style: TextStyle(fontSize: 18),),),
     Tab(child: Text("Oila",style: TextStyle(fontSize: 18),),),
     Tab(child: Text("Ish",style: TextStyle(fontSize: 18),),),
     Tab(child: Text("Shaxsiy",style: TextStyle(fontSize: 18),),),
