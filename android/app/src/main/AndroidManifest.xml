@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.taskinatoruz">
    <application
-        android:label="taskinatoruz"
+        android:label="Muslim kundaligi"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

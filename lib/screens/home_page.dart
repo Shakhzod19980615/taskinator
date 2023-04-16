@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       appBar: AppBar(
         title:Container(
             alignment: Alignment.center,
-            child: Text("Taskinatoruz",style: TextStyle(fontSize: 15,color: tdOrange),)),
+            child: Text("Muslim Kundaligi",style: TextStyle(fontSize: 15,color: tdOrange),)),
         elevation: 0,
         backgroundColor: bkground,
       ),
