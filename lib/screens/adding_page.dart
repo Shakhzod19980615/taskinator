@@ -152,7 +152,7 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
                   alignment: Alignment.centerLeft,
                   child: Text("Kategoriyani tanlang*", style: TextStyle(fontSize: 14,color: Colors.orange),)),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: 10),
                 margin: EdgeInsets.only(top: 25,bottom: 30),
                 decoration: BoxDecoration(
                     color: Color(0xFFf7cfa6),
@@ -329,8 +329,12 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
                       MaterialPageRoute(
                           builder: (context) =>
                               MyHomePage()
+
                       ),
                     );
+                     //Navigator.pop(context);
+                    /* Navigator.pushReplacement(context,
+                         MaterialPageRoute(builder: (BuildContext context){ return MyHomePage(); }));*/
                   }
                  //await NotificationService().showNotification(title: titleController.text,body: titleDescriptionController.text,id: 0);
                 },

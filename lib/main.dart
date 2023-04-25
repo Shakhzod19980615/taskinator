@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:provider/provider.dart';
 import 'package:taskinatoruz/screens/adding_page.dart';
 import 'package:taskinatoruz/screens/home_page.dart';
 import 'package:taskinatoruz/screens/settings_page.dart';
 import 'package:taskinatoruz/screens/tips_page.dart';
+import 'package:taskinatoruz/settings/settings_provider.dart';
 
 import 'colors/colors.dart';
 
 void main() {
-  runApp(const MyApp());
+
+  runApp(
+
+      ChangeNotifierProvider(
+        create: (context) => SettingsProvider()..initState(),
+        child:  MyApp(),
+      )
+  );
 }
 
 class MyApp extends StatelessWidget {

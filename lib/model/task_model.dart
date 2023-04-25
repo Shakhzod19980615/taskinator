@@ -7,6 +7,7 @@ class TaskModel {
   final String? start_time;
   final String? end_time;
   final int? isSaved;
+  int? isCompleted;
 
   TaskModel(
       {this.id,
@@ -16,7 +17,8 @@ class TaskModel {
         this.task_date,
         this.start_time,
         this.end_time,
-        this.isSaved});
+        this.isSaved,
+        this.isCompleted});
 
   factory TaskModel.fromMap(Map<String, dynamic> json) => TaskModel(
     id: json['id'],
@@ -26,7 +28,8 @@ class TaskModel {
     task_date: json['task_date'],
     start_time: json['start_time'],
     end_time: json["end_time"],
-    isSaved: json["isSaved"]
+    isSaved: json["isSaved"],
+    isCompleted: json["isCompleted"]
   );
 
   Map<String, dynamic> toMap() {
@@ -39,6 +42,7 @@ class TaskModel {
       'start_time': start_time,
       "end_time": end_time,
       "isSaved":isSaved,
+      "isCompleted":isCompleted
     };
   }
 }

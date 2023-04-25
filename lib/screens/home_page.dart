@@ -64,6 +64,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       appBar: AppBar(
         title:Container(
             alignment: Alignment.center,
+            //padding: EdgeInsets.symmetric(horizontal: 0),
             child: Text("Muslim Kundaligi",style: TextStyle(fontSize: 15,color: tdOrange),)),
         elevation: 0,
         backgroundColor: bkground,
@@ -145,7 +146,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ),
             Container(
               width: double.maxFinite,
-              height: MediaQuery.of(context).size.height*0.4,
+              height: MediaQuery.of(context).size.height*0.48,
               padding: EdgeInsets.zero,
               margin: EdgeInsets.only(left: 10,right: 10,),
               child: TabBarView(
@@ -181,7 +182,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             height: 350,
             width: 300,
             child: ListView.builder(
-              shrinkWrap: true,
+              //shrinkWrap: true,
                 itemCount: list?.length ??0,
                 itemBuilder: (context,index){
 

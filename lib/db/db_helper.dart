@@ -15,7 +15,7 @@ class SqliteService {
   _onCreatingDatabase(Database database, int version) async{
     await database.execute(
         "CREATE TABLE Tasks(id INTEGER PRIMARY KEY, category INTEGER, task_title TEXT,"
-            "task_description TEXT, task_date TEXT, start_time TEXT, end_time TEXT, isSaved INTEGER)");
+            "task_description TEXT, task_date TEXT, start_time TEXT, end_time TEXT, isSaved INTEGER, isCompleted INTEGER)");
   }
   Future<Database?> get database async{
     if(_database != null) return _database;
@@ -94,9 +94,9 @@ class SqliteService {
   Future<Future<int>?> updateTasks(TaskModel taskModel)async{
     print("inserting id ${taskModel.id}");
     Database? db = await database;
-    var result = db?.rawUpdate("UPDATE Tasks SET task_title=?, task_description=?, start_time=?,end_time=?"
+    var result = db?.rawUpdate("UPDATE Tasks SET task_title=?, task_description=?, start_time=?,end_time=?,isCompleted=?"
         " WHERE id=${taskModel.id}",[taskModel.task_title,taskModel.task_description,
-      taskModel.start_time,taskModel.end_time]);
+      taskModel.start_time,taskModel.end_time,taskModel.isCompleted]);
     return result;
   }
 

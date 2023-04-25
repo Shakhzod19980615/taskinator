@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taskinatoruz/settings/settings_provider.dart';
 
 import '../colors/colors.dart';
+import '../db/db_helper.dart';
 import '../model/task_model.dart';
 import '../screens/update_page.dart';
 
@@ -16,12 +19,16 @@ class ListItem extends StatefulWidget {
 }
 
 class _ListItemState extends State<ListItem> {
-  bool? isCompleted = false;
+
   late final String? task_description;
+  bool? isCompleted = false;
+  late int? completed;
+  var _sqliteService = SqliteService();
   @override
-  void initState() {
+  void initState(){
     // TODO: implement initState
     task_description = widget.taskList![widget.index1].task_description;
+
     super.initState();
   }
 
@@ -51,14 +58,14 @@ class _ListItemState extends State<ListItem> {
           child: Column(
             children: [
               Container(
-                color: isCompleted ==true ? bottomNavLight : bottomNav,
+                color: widget.taskList![widget.index1].isCompleted ==1 ? bottomNavLight : bottomNav,
                 padding: EdgeInsets.all(20),
 
                 child: Row(
                   children: [
                     Expanded(
                       child:Text(widget.taskList![widget.index1].task_title??"",
-                      style: TextStyle(color: Colors.white,decoration: isCompleted == true? TextDecoration.lineThrough : null,decorationThickness: 3),)
+                      style: TextStyle(color: Colors.white,decoration: widget.taskList![widget.index1].isCompleted == 1? TextDecoration.lineThrough : null,decorationThickness: 3),)
                     ),
                     Icon(Icons.access_time_rounded,color: Colors.orange,),
                     Text(widget.taskList![widget.index1].start_time??"",
@@ -71,21 +78,37 @@ class _ListItemState extends State<ListItem> {
               ),
               Container(
 
-                color: isCompleted == true? gray : Colors.white,
+                color: widget.taskList![widget.index1].isCompleted == 1? gray : Colors.white,
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 child: Row(
                   children: [
                     Expanded(
                         child: task_description!.isEmpty?
                         Text("Bu vazifa uchun tavsif qo‘shilmagan",
-                            style: TextStyle(decoration: isCompleted == true? TextDecoration.lineThrough : null)):
+                            style: TextStyle(decoration: widget.taskList![widget.index1].isCompleted == 1? TextDecoration.lineThrough : null)):
                         Text(task_description!,
-                    style: TextStyle(decoration: isCompleted == true? TextDecoration.lineThrough : null),)),
-                    Checkbox(value: isCompleted , onChanged: (bool? value){
+                    style: TextStyle(decoration: widget.taskList![widget.index1].isCompleted == 1? TextDecoration.lineThrough : null),)),
+                   /* Checkbox(value: SettingsProvider().isCompleted??false,
+                        onChanged: ( value){
                       setState(() {
-                        isCompleted = value!;
+                        SettingsProvider().changeCompleted(value??false);
                       });
-                    })
+
+                    })*/
+                    Checkbox(
+                      onChanged: (bool? value){
+                        setState(() {
+                          isCompleted = value!;
+                          if(isCompleted == false ){
+                            widget.taskList![widget.index1].isCompleted=0;
+                          }else{
+
+                            widget.taskList![widget.index1].isCompleted=1;
+                          }
+                          _sqliteService.updateTasks(widget.taskList![widget.index1]);
+                        });
+                      },
+                      value: widget.taskList![widget.index1].isCompleted==1?true:false,),
                   ],
                 ),
               )
