@@ -1,11 +1,13 @@
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../colors/colors.dart';
 import '../db/db_helper.dart';
 import '../main.dart';
 import '../model/task_model.dart';
+import '../settings/main_provider.dart';
 
 class UpdatePage extends StatefulWidget {
   UpdatePage({Key? key, required this.taskId, }) : super(key: key);
@@ -161,13 +163,14 @@ class _UpdatePageState extends State<UpdatePage> {
                 children: [
                   InkWell(
                     onTap: ()async {
-                      Navigator.push(
+                     /* Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
                                 MyHomePage()
                         ),
-                      );
+                      );*/
+                      Provider.of<MainSettingsProvider>(context,listen:false).changeMenuIndex(0);
                       var result = await _sqliteService.deleteTask(widget.taskId);
                       print(result);
                     },
@@ -184,13 +187,14 @@ class _UpdatePageState extends State<UpdatePage> {
                   Spacer(),
                   InkWell(
                     onTap: ()async {
-                      Navigator.push(
+                      /*Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
                                 MyHomePage()
                         ),
-                      );
+                      );*/
+                      Provider.of<MainSettingsProvider>(context,listen:false).changeMenuIndex(0);
                       await _sqliteService.updateTasks(
                           TaskModel(
                               id: taskById?.id,
