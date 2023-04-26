@@ -22,4 +22,5 @@ class SettingsProvider extends ChangeNotifier{
     pref?.setBool("isCompleted", value);
     notifyListeners();
   }
+
 }

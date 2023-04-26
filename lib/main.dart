@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:taskinatoruz/screens/adding_page.dart';
 import 'package:taskinatoruz/screens/home_page.dart';
 import 'package:taskinatoruz/screens/settings_page.dart';
 import 'package:taskinatoruz/screens/tips_page.dart';
+import 'package:taskinatoruz/settings/main_provider.dart';
 import 'package:taskinatoruz/settings/settings_provider.dart';
 
 import 'colors/colors.dart';
@@ -13,9 +17,12 @@ void main() {
 
   runApp(
 
-      ChangeNotifierProvider(
-        create: (context) => SettingsProvider()..initState(),
-        child:  MyApp(),
+      MultiBlocProvider(
+        providers: [ChangeNotifierProvider(
+          create: (context) => SettingsProvider()..initState(),
+        ),
+        ChangeNotifierProvider(create: (context)=>MainSettingsProvider())],
+        child: const MyApp() ,
       )
   );
 }
@@ -52,6 +59,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
  int index = 0;
  final bottomItems = <Widget>[HomePage(),SettingsPage(),AddingPage()];
 
@@ -59,6 +67,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    int? itemCount = Provider.of<MainSettingsProvider>(context).getMenuListener();
+    if (itemCount == 0) {
+      index = 0;
+      Timer(const Duration(seconds: 1), () {
+        Provider.of<MainSettingsProvider>(context,listen:false).changeMenuIndex(1);
+      });
+    }
+    //var provider = Provider.of<MainSettingsProvider>(context, listen: true);
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //

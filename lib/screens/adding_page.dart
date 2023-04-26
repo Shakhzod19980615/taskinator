@@ -4,10 +4,12 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:provider/provider.dart';
 import 'package:taskinatoruz/db/database_helper.dart';
 import 'package:taskinatoruz/main.dart';
 import 'package:taskinatoruz/model/task_model.dart';
 import 'package:taskinatoruz/screens/home_page.dart';
+import 'package:taskinatoruz/settings/main_provider.dart';
 import 'package:taskinatoruz/utils/notification_service.dart';
 
 import '../colors/colors.dart';
@@ -324,14 +326,7 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
                         task_description: titleDescriptionController.text,
                         task_date: date,start_time: startTime,end_time: endTime,isSaved: saved));
                     //print(result);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              MyHomePage()
-
-                      ),
-                    );
+                     Provider.of<MainSettingsProvider>(context,listen:false).changeMenuIndex(0);
                      //Navigator.pop(context);
                     /* Navigator.pushReplacement(context,
                          MaterialPageRoute(builder: (BuildContext context){ return MyHomePage(); }));*/
