@@ -8,8 +8,10 @@ import '../db/db_helper.dart';
 import '../model/task_model.dart';
 
 class NotificationService{
+
   final FlutterLocalNotificationsPlugin notificationsPlugin =
       FlutterLocalNotificationsPlugin();
+
   final BehaviorSubject<String?> onNotificationClick = BehaviorSubject();
   Future<void> initNotification() async{
     AndroidInitializationSettings initializationSettingsAndroid =
@@ -49,18 +51,33 @@ class NotificationService{
 } ) async{
   return await notificationsPlugin.show(id, title, body, notificationDetails(),);
 }
-  Future<void> showScheduledNotification(int hour,int minutes,TaskModel taskModel) async{
-
-    return await notificationsPlugin.zonedSchedule(
-        taskModel.id!!,
-        taskModel.task_title,
-        " Bismillah bilan boshlang :)",
-        _convertTime(hour,minutes),
-        //tz.TZDateTime.now(tz.local),
-        /*tz.TZDateTime.local(DateTime.now().year,DateTime.now().month,DateTime.now().day,
+  Future<void> showScheduledNotification(int hour,int minutes,TaskModel taskModel,taskId) async{
+    DateTime current_time=DateTime.now();
+    if(current_time.isBefore(_convertTime(hour, minutes))){
+      return await notificationsPlugin.zonedSchedule(
+          taskId,
+          taskModel.task_title,
+          taskModel.task_description,
+          _convertTime(hour,minutes),
+          //tz.TZDateTime.now(tz.local),
+          /*tz.TZDateTime.local(DateTime.now().year,DateTime.now().month,DateTime.now().day,
             DateTime.now().hour+5,DateTime.now().minute+1),*/
-        notificationDetails(), uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-        androidAllowWhileIdle: true);
+          notificationDetails(), uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+          androidAllowWhileIdle: true);
+    }
+
+  }
+  getAllList()async{
+    var f = await notificationsPlugin.getActiveNotifications();
+    print(f.toString());
+  }
+  void cancelTask(int? taskId)async{
+    await getAllList();
+    await notificationsPlugin.cancel(taskId??-1);
+    await getAllList();
+  }
+  Future<void> cancelNotifications(int? taskId) async {
+    await notificationsPlugin.cancel(taskId??-1);
   }
   tz.TZDateTime _convertTime(int hour,int minutes){
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);

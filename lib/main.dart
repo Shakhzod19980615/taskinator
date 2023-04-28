@@ -60,20 +60,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
- int index = 0;
+
  final bottomItems = <Widget>[HomePage(),SettingsPage(),AddingPage()];
 
 
 
   @override
   Widget build(BuildContext context) {
-    int? itemCount = Provider.of<MainSettingsProvider>(context).getMenuListener();
-    if (itemCount == 0) {
-      index = 0;
-      Timer(const Duration(seconds: 1), () {
-        Provider.of<MainSettingsProvider>(context,listen:false).changeMenuIndex(1);
-      });
-    }
+    var provider = Provider.of<MainSettingsProvider>(context,listen:true);
     //var provider = Provider.of<MainSettingsProvider>(context, listen: true);
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
@@ -83,11 +77,12 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       bottomNavigationBar: GNav(
-        selectedIndex: index,
+        selectedIndex: provider.index??0,
         onTabChange: (x){
-          setState(() {
-            index = x;
-          });
+          // setState(() {
+            // index = x;
+            provider.changeMenuIndex(x);
+          // });
         },
         activeColor: Colors.white,
         iconSize: 24,
@@ -104,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
 
       ),
-      body:bottomItems[index]
+      body:bottomItems[provider.index??0]
     );
   }
 }

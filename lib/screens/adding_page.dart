@@ -50,7 +50,7 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
     super.initState();
     _tabController = TabController(vsync: this, length: myTabs.length);
     initializeDateFormatting();
-    getList();
+    //getList();
     service = NotificationService();
     service.initNotification();
     //listenNotification();
@@ -105,13 +105,8 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
             Spacer(),
             InkWell(
                 onTap: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            MyHomePage()
-                    ),
-                  );
+                  Provider.of<MainSettingsProvider>(context,listen:false).changeMenuIndex(0);
+                  //Navigator.pop(context);
                 },
                 child: Icon(Icons.cancel,color: bottomNav,))
           ],
@@ -130,10 +125,19 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
             children: [
               GestureDetector(
                 onTap: (){
-                  showModalBottomSheet(shape:RoundedRectangleBorder(
+                  showModalBottomSheet(shape:const RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight:Radius.circular(20) ),
-                  ), context: context, builder: (c)=> BottomSheetTask(
-                  ));
+                  ), context: context, builder: (c)=> BottomSheetTask(onSavedTap: (savedItem){
+                    titleController.text = savedItem.task_title??"";
+                    dateController.text = savedItem.task_date??"";
+                    titleDescriptionController.text = savedItem.task_description??"";
+                    startTimeController.text = savedItem.start_time??"";
+                    endTimeController.text = savedItem.end_time??"";
+                    tabIndex = savedItem.category??0;
+                    _tabController.index = tabIndex;
+
+                    setState(() {});
+                  }));
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 15,vertical: 15),
@@ -320,13 +324,15 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
                     saved = 1;
                   }
                   if(_titleKey.currentState!.validate()){
-                     await _sqliteService.insertData(TaskModel(
+                    var result = await _sqliteService.insertData(TaskModel(
                         category:_tabController.index,
                         task_title: titleController.text,
                         task_description: titleDescriptionController.text,
                         task_date: date,start_time: startTime,end_time: endTime,isSaved: saved));
-                    //print(result);
+                    print(result);
+
                      Provider.of<MainSettingsProvider>(context,listen:false).changeMenuIndex(0);
+                     print("saved");
                      //Navigator.pop(context);
                     /* Navigator.pushReplacement(context,
                          MaterialPageRoute(builder: (BuildContext context){ return MyHomePage(); }));*/

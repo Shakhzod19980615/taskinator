@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_timeline_calendar/timeline/flutter_timeline_calendar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -6,6 +7,8 @@ import 'package:path/path.dart';
 import '../model/task_model.dart';
 class SqliteService {
   static Database? _database;
+  static ValueNotifier onChange = ValueNotifier(0);
+
   setDatabase() async{
     var directory = await getApplicationDocumentsDirectory();
     var path = join(directory.path, "db_todolist_sqflite");
@@ -24,7 +27,8 @@ class SqliteService {
   }
   insertData(TaskModel taskModel) async{
     var connection = await database;
-    return await connection?.insert("Tasks", taskModel.toMap());
+    await connection?.insert("Tasks", taskModel.toMap());
+    onChange.notifyListeners();
   }
 
   Future<Future<List<Map<String, Object?>>>> readData()  async{
@@ -38,6 +42,7 @@ class SqliteService {
         "SELECT * from Tasks where category = 0 AND task_date= ?",[selectedDate]);
     List<TaskModel>? modelList =
     model!.isNotEmpty ? model.map((c) => TaskModel.fromMap(c)).toList():[];
+    onChange.notifyListeners();
     return modelList;
   }
   Future<List<TaskModel>> getFamilyTasks(String selectedDate) async{
@@ -46,6 +51,7 @@ class SqliteService {
         "SELECT * from Tasks where category = 1 AND task_date= ?",[selectedDate]);
     List<TaskModel>? modelList =
     model!.isNotEmpty ? model.map((c) => TaskModel.fromMap(c)).toList():[];
+    onChange.notifyListeners();
     return modelList;
   }
   Future<List<TaskModel>> getWorkTasks(String selectedDate) async{
@@ -54,6 +60,7 @@ class SqliteService {
         "SELECT * from Tasks where category = 2 AND task_date= ?",[selectedDate]);
     List<TaskModel>? modelList =
     model!.isNotEmpty ? model.map((c) => TaskModel.fromMap(c)).toList():[];
+    onChange.notifyListeners();
     return modelList;
   }
   Future<List<TaskModel>> getPersonalTasks(String selectedDate) async{
@@ -62,6 +69,7 @@ class SqliteService {
         "SELECT * from Tasks where category = 3 AND task_date= ?",[selectedDate]);
     List<TaskModel>? modelList =
     model!.isNotEmpty ? model.map((c) => TaskModel.fromMap(c)).toList():[];
+    onChange.notifyListeners();
     return modelList;
   }
 
@@ -72,6 +80,7 @@ class SqliteService {
     );
     List<TaskModel>? modelList =
     model!.isNotEmpty ? model.map((c) => TaskModel.fromMap(c)).toList():[];
+    onChange.notifyListeners();
     return modelList;
   }
   Future<TaskModel> getTaskById(int? id) async{
@@ -80,6 +89,7 @@ class SqliteService {
         "SELECT * from Tasks where id = $id");
     List<TaskModel>? modelList =
     model!.isNotEmpty ? model.map((c) => TaskModel.fromMap(c)).toList():[];
+    onChange.notifyListeners();
     return modelList.first;
   }
   Future<List<TaskModel>> deleteTask(int? id) async{
@@ -89,6 +99,7 @@ class SqliteService {
         "DELETE FROM Tasks WHERE  id = $id");
     List<TaskModel>? modelList =
     model!.isNotEmpty ? model.map((c) => TaskModel.fromMap(c)).toList():[];
+    onChange.notifyListeners();
     return modelList;
   }
   Future<Future<int>?> updateTasks(TaskModel taskModel)async{
@@ -97,6 +108,7 @@ class SqliteService {
     var result = db?.rawUpdate("UPDATE Tasks SET task_title=?, task_description=?, start_time=?,end_time=?,isCompleted=?"
         " WHERE id=${taskModel.id}",[taskModel.task_title,taskModel.task_description,
       taskModel.start_time,taskModel.end_time,taskModel.isCompleted]);
+    onChange.notifyListeners();
     return result;
   }
 

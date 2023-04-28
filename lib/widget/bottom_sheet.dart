@@ -6,7 +6,10 @@ import '../db/db_helper.dart';
 import '../model/task_model.dart';
 
 class BottomSheetTask extends StatelessWidget {
-  const BottomSheetTask({Key? key,}) : super(key: key);
+  const BottomSheetTask({Key? key,required this.onSavedTap}) : super(key: key);
+
+  final Function(TaskModel model) onSavedTap;
+
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +38,7 @@ class BottomSheetTask extends StatelessWidget {
             FutureBuilder<List<TaskModel>>(
                 future:  _sqliteService.getSavedTasks(),
                 builder: (context,snapshot){
-                  if(snapshot.data!.isEmpty){
+                  if(!snapshot.hasData){
                     return Container(
                         margin: EdgeInsets.symmetric(vertical: 20),
                         child: Text("Saqlangan vazifa yo'q",style: TextStyle(fontSize: 30,fontWeight: FontWeight.w500),));
@@ -50,7 +53,13 @@ class BottomSheetTask extends StatelessWidget {
                           itemBuilder: (context,index){
                             return SavedListItem(
                               savedTaskList: list,
-                              savedTaskIndex: index,
+                                index: index,
+                              onTap : (){
+                                onSavedTap.call(list![index]);
+
+                                Navigator.of(context).pop();
+
+                              }
                             );
                           }),
                     );

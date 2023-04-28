@@ -169,136 +169,163 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
    Widget _islamList()  {
-    return FutureBuilder<List<TaskModel>>(
-        future:   _sqliteService.getIslamTasks(selectedDate.toString()),
-        builder: (context, snapshot){
-        if(snapshot.hasData && snapshot.data?.isEmpty==true) {
-          return Image.asset("assets/images/Islam.jpg");
-        }else{
-          var list =  snapshot.data;
-          return  Container(
-            margin: EdgeInsets.only(top: 10,bottom: 10),
-            padding: EdgeInsets.only(top: 10),
-            height: 350,
-            width: 300,
-            child: ListView.builder(
-              //shrinkWrap: true,
-                itemCount: list?.length ??0,
-                itemBuilder: (context,index){
+    return ValueListenableBuilder(
+      valueListenable: SqliteService.onChange,
+      builder: (context,s,d) {
+        return FutureBuilder<List<TaskModel>>(
+            future:   _sqliteService.getIslamTasks(selectedDate.toString()),
+            builder: (context, snapshot){
+            if(snapshot.hasData && snapshot.data?.isEmpty==true) {
+              return Image.asset("assets/images/Islam.jpg");
+            }else{
+              var list =  snapshot.data;
+              return  Container(
+                margin: EdgeInsets.only(top: 10,bottom: 10),
+                padding: EdgeInsets.only(top: 10),
+                height: 350,
+                width: 300,
+                child: ListView.builder(
+                  //shrinkWrap: true,
+                    itemCount: list?.length ??0,
+                    itemBuilder: (context,index){
 
-                TaskModel task = list![index];
-                DateTime date = DateFormat("HH:mm").parse(task.start_time.toString());
-                var myTime = DateFormat("HH:mm").format(date);
-                service.showScheduledNotification(
-                  int.parse(myTime.toString().split(":")[0]),
-                  int.parse(myTime.toString().split(":")[1]),
-                  task
-                );
-                return ListItem(taskList: list,index1: index,);
-                }),
-          );
-        }
-      },
+                    TaskModel task = list![index];
+                    DateTime date = DateFormat("HH:mm").parse(task.start_time.toString());
+                    var myTime = DateFormat("HH:mm").format(date);
+                    if(list[index].id != null){
+                      service.showScheduledNotification(
+                          int.parse(myTime.toString().split(":")[0]),
+                          int.parse(myTime.toString().split(":")[1]),
+                          task,
+                          list[index].id
+                      );
+                    }
+
+                    return ListItem(taskList: list,index1: index,);
+                    }),
+              );
+            }
+          },
+        );
+      }
     );
   }
    Widget _familyList()  {
-    return FutureBuilder<List<TaskModel>>(
-      future:   _sqliteService.getFamilyTasks(selectedDate.toString()),
-      builder: (context, snapshot){
-        if(snapshot.hasData && snapshot.data?.isEmpty==true) {
-          return Image.asset("assets/images/Family.jpg");
-        }else{
-          var list =  snapshot.data;
-          return  Container(
-            margin: EdgeInsets.only(top: 10,bottom: 10),
-            padding: EdgeInsets.only(top: 10),
-            height: 350,
-            width: 300,
-            child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: list?.length ??0,
-                itemBuilder: (context,index){
-                  TaskModel task = list![index];
-                  DateTime date = DateFormat("HH:mm").parse(task.start_time.toString());
-                  var myTime = DateFormat("HH:mm").format(date);
-                  service.showScheduledNotification(
-                      int.parse(myTime.toString().split(":")[0]),
-                      int.parse(myTime.toString().split(":")[1]),
-                      task
-                  );
-                  return ListItem(taskList: list,index1: index,);
-                }),
+    return ValueListenableBuilder(
+      valueListenable: SqliteService.onChange,
+        builder: (context,s,d) {
+          return FutureBuilder<List<TaskModel>>(
+            future: _sqliteService.getFamilyTasks(selectedDate.toString()),
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data?.isEmpty == true) {
+                return Image.asset("assets/images/Family.jpg");
+              } else {
+                var list = snapshot.data;
+                return Container(
+                  margin: EdgeInsets.only(top: 10, bottom: 10),
+                  padding: EdgeInsets.only(top: 10),
+                  height: 350,
+                  width: 300,
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: list?.length ?? 0,
+                      itemBuilder: (context, index) {
+                        TaskModel task = list![index];
+                        DateTime date = DateFormat("HH:mm").parse(
+                            task.start_time.toString());
+                        var myTime = DateFormat("HH:mm").format(date);
+                        service.showScheduledNotification(
+                        int.parse(myTime.toString().split(":")[0]),
+                        int.parse(myTime.toString().split(":")[1]),
+                        task,
+                          list[index].id
+                    );
+                        return ListItem(taskList: list, index1: index,);
+                      }),
+                );
+              }
+            },
           );
-        }
-      },
-    );
+
+        });
 
 
   }
    Widget _workList()  {
-    return FutureBuilder<List<TaskModel>>(
-      future:   _sqliteService.getWorkTasks(selectedDate.toString()),
-      builder: (context, snapshot){
-        if(snapshot.hasData && snapshot.data?.isEmpty==true ) {
-          return Image.asset("assets/images/Work.jpg");
-        }else{
-          var list =  snapshot.data;
-          return  Container(
-            margin: EdgeInsets.only(top: 10,bottom: 10),
-            padding: EdgeInsets.only(top: 10),
-            height: 350,
-            width: 300,
-            child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: list?.length ??0,
-                itemBuilder: (context,index){
-                  TaskModel task = list![index];
-                  DateTime date = DateFormat("HH:mm").parse(task.start_time.toString());
-                  var myTime = DateFormat("HH:mm").format(date);
-                  service.showScheduledNotification(
-                      int.parse(myTime.toString().split(":")[0]),
-                      int.parse(myTime.toString().split(":")[1]),
-                      task
-                  );
-                  return ListItem(taskList: list,index1: index,);
-                }),
-          );
-        }
-      },
+     return ValueListenableBuilder(
+         valueListenable: SqliteService.onChange,
+         builder: (context,s,d){
+      return FutureBuilder<List<TaskModel>>(
+        future:   _sqliteService.getWorkTasks(selectedDate.toString()),
+        builder: (context, snapshot){
+          if(snapshot.hasData && snapshot.data?.isEmpty==true ) {
+            return Image.asset("assets/images/Work.jpg");
+          }else{
+            var list =  snapshot.data;
+            return  Container(
+              margin: EdgeInsets.only(top: 10,bottom: 10),
+              padding: EdgeInsets.only(top: 10),
+              height: 350,
+              width: 300,
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: list?.length ??0,
+                  itemBuilder: (context,index){
+                    TaskModel task = list![index];
+                    DateTime date = DateFormat("HH:mm").parse(task.start_time.toString());
+                    var myTime = DateFormat("HH:mm").format(date);
+                    service.showScheduledNotification(
+                        int.parse(myTime.toString().split(":")[0]),
+                        int.parse(myTime.toString().split(":")[1]),
+                        task,
+                        list[index].id
+                    );
+                    return ListItem(taskList: list,index1: index,);
+                  }),
+            );
+          }
+        },
+      );
+         }
     );
 
 
   }
    Widget _personalList()  {
-    return FutureBuilder<List<TaskModel>>(
-      future:   _sqliteService.getPersonalTasks(selectedDate.toString()),
-      builder: (context, snapshot){
-        if(snapshot.hasData && snapshot.data?.isEmpty==true) {
-          return Image.asset("assets/images/Personal.jpg");
-        }else{
-          var list =  snapshot.data;
-          return  Container(
-            margin: EdgeInsets.only(top: 10,bottom: 10),
-            padding: EdgeInsets.only(top: 10),
-            height: 350,
-            width: 300,
-            child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: list?.length ??0,
-                itemBuilder: (context,index){
-                  TaskModel task = list![index];
-                  DateTime date = DateFormat("HH:mm").parse(task.start_time.toString());
-                  var myTime = DateFormat("HH:mm").format(date);
-                  service.showScheduledNotification(
-                      int.parse(myTime.toString().split(":")[0]),
-                      int.parse(myTime.toString().split(":")[1]),
-                      task
-                  );
-                  return ListItem(taskList: list,index1: index,);
-                }),
-          );
-        }
-      },
+    return ValueListenableBuilder(
+        valueListenable: SqliteService.onChange,
+        builder: (context,s,d){
+      return FutureBuilder<List<TaskModel>>(
+        future:   _sqliteService.getPersonalTasks(selectedDate.toString()),
+        builder: (context, snapshot){
+          if(snapshot.hasData && snapshot.data?.isEmpty==true) {
+            return Image.asset("assets/images/Personal.jpg");
+          }else{
+            var list =  snapshot.data;
+            return  Container(
+              margin: EdgeInsets.only(top: 10,bottom: 10),
+              padding: EdgeInsets.only(top: 10),
+              height: 350,
+              width: 300,
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: list?.length ??0,
+                  itemBuilder: (context,index){
+                    TaskModel task = list![index];
+                    DateTime date = DateFormat("HH:mm").parse(task.start_time.toString());
+                    var myTime = DateFormat("HH:mm").format(date);
+                    service.showScheduledNotification(
+                        int.parse(myTime.toString().split(":")[0]),
+                        int.parse(myTime.toString().split(":")[1]),
+                        task,
+                        list[index].id
+                    );
+                    return ListItem(taskList: list,index1: index,);
+                  }),
+            );
+          }
+        },
+      );}
     );
 
 

@@ -1,23 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:taskinatoruz/screens/adding_page.dart';
 
 import '../colors/colors.dart';
 import '../model/task_model.dart';
 
-class SavedListItem extends StatefulWidget {
-  SavedListItem({Key? key, required this.savedTaskList, required this.savedTaskIndex}) : super(key: key);
+class SavedListItem extends StatelessWidget {
+  SavedListItem({Key? key, required this.savedTaskList,required this.onTap, required this.index}) : super(key: key);
   final List<TaskModel>? savedTaskList;
-  final int savedTaskIndex;
-  @override
-  State<SavedListItem> createState() => _SavedListItemState();
-}
-
-class _SavedListItemState extends State<SavedListItem> {
-   late String _taskCategory;
+  final VoidCallback onTap;
+  final int index;
+  late String _taskCategory;
   @override
   Widget build(BuildContext context) {
-    int? taskCategory = widget.savedTaskList?[widget.savedTaskIndex].category?.toInt();
+    int? taskCategory = savedTaskList![index].category?.toInt();
     if(taskCategory.toString() =="0"){
       _taskCategory = "Ibodatlar";
     }else if(taskCategory.toString() == "1"){
@@ -28,32 +23,12 @@ class _SavedListItemState extends State<SavedListItem> {
     }else{
       _taskCategory = "Shaxsiy";
     }
-   /* switch(widget.savedTaskList?.first.category??0){
-      case 0 : taskCategory = "Islam";
-      break;
-      case 1: taskCategory = "Work";
-      break;
-      case 2: taskCategory = "Family";
-      break;
-      case 3: taskCategory = "Personal";
-      break;
-    }*/
+
     return GestureDetector(
-      onTap: () async{ await
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  AddingPage(savedTaskId: widget.savedTaskList![widget.savedTaskIndex].id,
-                  )
-          ),
-        );
-        Navigator.of(context).pop();
-        //Navigator.pop(context);
-      },
+      onTap: onTap,
       child: Container(
-        padding: EdgeInsets.all(15),
-        margin: EdgeInsets.symmetric(horizontal: 0,vertical: 5),
+        padding: const EdgeInsets.all(15),
+        margin: const EdgeInsets.symmetric(horizontal: 0,vertical: 5),
         decoration: BoxDecoration(
             color: bottomNav,
             borderRadius: BorderRadius.circular(10)
@@ -62,35 +37,35 @@ class _SavedListItemState extends State<SavedListItem> {
           children: [
             Row(
               children: [
-                Text("Vazifa nomi",style: TextStyle(fontSize: 14,color: Colors.white),),
+                const Text("Vazifa nomi",style: TextStyle(fontSize: 14,color: Colors.white),),
                 Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                    child: Text("-",style: TextStyle(fontSize: 14,color: Colors.white),)),
-                Text(widget.savedTaskList![widget.savedTaskIndex].task_title??"",style: TextStyle(fontSize: 14,color: Colors.white),)
+                    margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                    child: const Text("-",style: TextStyle(fontSize: 14,color: Colors.white),)),
+                Text(savedTaskList![index].task_title??"",style: const TextStyle(fontSize: 14,color: Colors.white),)
               ],
             ),
             Row(
               children: [
-                Text("Kategoriya",style: TextStyle(fontSize: 14,color: Colors.white)),
-                Container(margin: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                    child: Text("-",style: TextStyle(fontSize: 14,color: Colors.white),)),
-                Text(_taskCategory,style: TextStyle(fontSize: 14,color: Colors.white),)
+                const Text("Kategoriya",style: TextStyle(fontSize: 14,color: Colors.white)),
+                Container(margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                    child: const Text("-",style: TextStyle(fontSize: 14,color: Colors.white),)),
+                Text(_taskCategory,style: const TextStyle(fontSize: 14,color: Colors.white),)
               ],
             ),
             Row(
               children: [
-                Text("Boshlanish vaqti",style: TextStyle(fontSize: 14,color: Colors.white)),
-                Container(margin: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                    child: Text("-",style: TextStyle(fontSize: 14,color: Colors.white),)),
-                Text(widget.savedTaskList?[widget.savedTaskIndex].start_time??"",style: TextStyle(fontSize: 14,color: Colors.white),)
+                const Text("Boshlanish vaqti",style: TextStyle(fontSize: 14,color: Colors.white)),
+                Container(margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                    child: const Text("-",style: TextStyle(fontSize: 14,color: Colors.white),)),
+                Text(savedTaskList![index].start_time??"",style: const TextStyle(fontSize: 14,color: Colors.white),)
               ],
             ),
             Row(
               children: [
-                Text("Tugash vaqti",style: TextStyle(fontSize: 14,color: Colors.white)),
-                Container(margin: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                    child: Text("-",style: TextStyle(fontSize: 14,color: Colors.white),)),
-                Text(widget.savedTaskList?[widget.savedTaskIndex].end_time??"",style: TextStyle(fontSize: 14,color: Colors.white),)
+                const Text("Tugash vaqti",style: TextStyle(fontSize: 14,color: Colors.white)),
+                Container(margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                    child: const Text("-",style: TextStyle(fontSize: 14,color: Colors.white),)),
+                Text(savedTaskList![index].end_time??"",style: const TextStyle(fontSize: 14,color: Colors.white),)
               ],
             )
           ],
@@ -99,3 +74,5 @@ class _SavedListItemState extends State<SavedListItem> {
     );
   }
 }
+
+

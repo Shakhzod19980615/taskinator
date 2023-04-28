@@ -8,6 +8,8 @@ import '../db/db_helper.dart';
 import '../main.dart';
 import '../model/task_model.dart';
 import '../settings/main_provider.dart';
+import '../utils/notification_service.dart';
+import 'home_page.dart';
 
 class UpdatePage extends StatefulWidget {
   UpdatePage({Key? key, required this.taskId, }) : super(key: key);
@@ -29,12 +31,27 @@ class _UpdatePageState extends State<UpdatePage> {
   final titleDescriptionController = TextEditingController();
   final startTimeController = TextEditingController();
   final endTimeController = TextEditingController();
+  late final NotificationService service;
   @override
   void initState() {
+    service = NotificationService();
+    service.initNotification();
+    service.notificationDetails();
+    listenNotification();
+    setState(() {
+
+    });
     super.initState();
     getList();
   }
+  void listenNotification()=>service.onNotificationClick.stream.listen((onNotificationListener));
+  void onNotificationListener (String? payload){
+    if(payload !=null && payload.isNotEmpty){
+      print("payload $payload");
 
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
+    }
+  }
   getList()async{
      taskById =await _sqliteService.getTaskById(widget.taskId);
      titleController.text = taskById?.task_title??"";
@@ -170,9 +187,16 @@ class _UpdatePageState extends State<UpdatePage> {
                                 MyHomePage()
                         ),
                       );*/
-                      Provider.of<MainSettingsProvider>(context,listen:false).changeMenuIndex(0);
-                      var result = await _sqliteService.deleteTask(widget.taskId);
-                      print(result);
+
+                       _sqliteService.deleteTask(widget.taskId);
+                       if(widget.taskId==null){
+                         service.cancelTask(widget.taskId);
+                       }
+                      //Provider.of<MainSettingsProvider>(context,listen:false).changeMenuIndex(0);
+                      //service.cancelTask(widget.taskId);
+
+                      Navigator.pop(context);
+                      print({_sqliteService.deleteTask(widget.taskId)});
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -194,8 +218,9 @@ class _UpdatePageState extends State<UpdatePage> {
                                 MyHomePage()
                         ),
                       );*/
-                      Provider.of<MainSettingsProvider>(context,listen:false).changeMenuIndex(0);
-                      await _sqliteService.updateTasks(
+
+                      //Navigator.pop(context);
+                       _sqliteService.updateTasks(
                           TaskModel(
                               id: taskById?.id,
                               task_title: titleController.text.toString(),
@@ -204,6 +229,9 @@ class _UpdatePageState extends State<UpdatePage> {
                               end_time: endTimeController.text.toString()
                           ),
                       );
+
+                      //Provider.of<MainSettingsProvider>(context,listen:false).changeMenuIndex(0);
+                       Navigator.pop(context);
                     },
                     child: Container(
                       decoration: BoxDecoration(
