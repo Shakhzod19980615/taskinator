@@ -68,14 +68,9 @@ class NotificationService{
     }
 
   }
-  getAllList()async{
-    var f = await notificationsPlugin.getActiveNotifications();
-    print(f.toString());
-  }
+
    Future<void>cancelTask(int? taskId)async{
-    await getAllList();
     await notificationsPlugin.cancel(taskId??0);
-    await getAllList();
 
   }
 
