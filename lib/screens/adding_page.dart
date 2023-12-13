@@ -118,7 +118,7 @@ class _AddingPageState extends State<AddingPage> with SingleTickerProviderStateM
 
         child: Container(
           width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
+          // height: MediaQuery.of(context).size.height,
           margin: EdgeInsets.only(left: 15,right: 15),
 
           child: Column(

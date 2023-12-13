@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_timeline_calendar/timeline/flutter_timeline_calendar.dart';
+import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
 
 import '../model/task_model.dart';
 class SqliteService {
@@ -92,11 +91,11 @@ class SqliteService {
     onChange.notifyListeners();
     return modelList.first;
   }
-  Future<List<TaskModel>> deleteTask(int? id) async{
+  Future<List<TaskModel>> deleteTask(int? id,) async{
     Database? db = await database;
 
     var model = await db?.rawQuery(
-        "DELETE FROM Tasks WHERE  id = $id");
+        "DELETE FROM Tasks WHERE  id = $id ");
     List<TaskModel>? modelList =
     model!.isNotEmpty ? model.map((c) => TaskModel.fromMap(c)).toList():[];
     onChange.notifyListeners();

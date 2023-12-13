@@ -71,7 +71,7 @@ class _UpdatePageState extends State<UpdatePage> {
       appBar: AppBar(
         title: Row(
           children: [
-            Text("Edit task", style: TextStyle(fontSize: 20,color: Colors.orange,fontWeight: FontWeight.w500),),
+            Text("Vazifani tahrirlash", style: TextStyle(fontSize: 20,color: Colors.orange,fontWeight: FontWeight.w500),),
             Spacer(),
             InkWell(
                 onTap: (){
@@ -110,7 +110,7 @@ class _UpdatePageState extends State<UpdatePage> {
                     controller: titleController,
                     validator: (value){
                       if(value ==null || value.isEmpty ){
-                        return 'Please enter title';
+                        return 'Iltimos, sarlavha kiriting';
                       }
                       return null;
                     },
@@ -121,7 +121,7 @@ class _UpdatePageState extends State<UpdatePage> {
                         disabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: CupertinoColors.inactiveGray)
                         ),
-                        labelText: 'Task title*',
+                        labelText: 'Vazifa nomi*',
                         labelStyle: TextStyle(color:  Colors.black38)
                     ),
                   ),
@@ -139,7 +139,7 @@ class _UpdatePageState extends State<UpdatePage> {
                       disabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: CupertinoColors.inactiveGray)
                       ),
-                      labelText: 'Task description',
+                      labelText: "Vazifa tavsifi",
                       labelStyle: TextStyle(color:  Colors.black38)
                   ),
                 ),
@@ -151,7 +151,7 @@ class _UpdatePageState extends State<UpdatePage> {
                     type: DateTimePickerType.time,
                     controller: startTimeController,
                     icon: Icon(Icons.access_time_rounded,color: Colors.orange,),
-                    timeLabelText: "Start time",
+                    timeLabelText: "Boshlanish vaqti",
                     cursorColor: Colors.orange,
                     use24HourFormat: true,
                     locale: Locale("pt","BR"),
@@ -180,47 +180,29 @@ class _UpdatePageState extends State<UpdatePage> {
                 children: [
                   InkWell(
                     onTap: ()async {
-                     /* Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                MyHomePage()
-                        ),
-                      );*/
-
-                       _sqliteService.deleteTask(widget.taskId);
-                       if(widget.taskId==null){
-                         service.cancelTask(widget.taskId);
-                       }
-                      //Provider.of<MainSettingsProvider>(context,listen:false).changeMenuIndex(0);
-                      //service.cancelTask(widget.taskId);
+                      await service.cancelTask(taskById?.id);
+                     await _sqliteService.deleteTask(taskById?.id);
 
                       Navigator.pop(context);
-                      print({_sqliteService.deleteTask(widget.taskId)});
+                      setState(() {
+
+                      });
                     },
                     child: Container(
                       decoration: BoxDecoration(
                           color: Colors.red,
                           borderRadius: BorderRadius.circular(10)
                       ),
-                      padding: EdgeInsets.symmetric(horizontal: 50,vertical: 20),
-                      margin: EdgeInsets.only(top: 20),
-                      child: Text("Delete",style: TextStyle(color: Colors.white,fontSize: 20),),
+                      padding: const EdgeInsets.symmetric(horizontal: 25,vertical: 20),
+                      margin: const EdgeInsets.only(top: 20,left: 10,),
+                      child: const Text("Oʻchirish",style: TextStyle(color: Colors.white,fontSize: 20),),
                     ),
                   ),
                   Spacer(),
                   InkWell(
                     onTap: ()async {
-                      /*Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                MyHomePage()
-                        ),
-                      );*/
 
-                      //Navigator.pop(context);
-                       _sqliteService.updateTasks(
+                      await _sqliteService.updateTasks(
                           TaskModel(
                               id: taskById?.id,
                               task_title: titleController.text.toString(),
@@ -238,9 +220,9 @@ class _UpdatePageState extends State<UpdatePage> {
                           color: Colors.orange,
                           borderRadius: BorderRadius.circular(10)
                       ),
-                      padding: EdgeInsets.symmetric(horizontal: 50,vertical: 20),
-                      margin: EdgeInsets.only(top: 20),
-                      child: Text("Update",style: TextStyle(color: Colors.white,fontSize: 20),),
+                      padding: EdgeInsets.symmetric(horizontal: 25,vertical: 20),
+                      margin: EdgeInsets.only(top: 20,right: 10),
+                      child: Text("Yangilash",style: TextStyle(color: Colors.white,fontSize: 20),),
                     ),
                   )
                 ],

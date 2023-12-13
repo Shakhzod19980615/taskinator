@@ -56,7 +56,6 @@ class BottomSheetTask extends StatelessWidget {
                                 index: index,
                               onTap : (){
                                 onSavedTap.call(list![index]);
-
                                 Navigator.of(context).pop();
 
                               }

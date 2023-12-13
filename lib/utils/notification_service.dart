@@ -45,17 +45,18 @@ class NotificationService{
   }
 
   Future<void>   showNotification ({
-     id=0,  title,  body,
+     id,  title,  body,
     required  time,
     String? payLoad,
 } ) async{
   return await notificationsPlugin.show(id, title, body, notificationDetails(),);
 }
-  Future<void> showScheduledNotification(int hour,int minutes,TaskModel taskModel,taskId) async{
+   showScheduledNotification(int hour,int minutes,TaskModel taskModel) async{
     DateTime current_time=DateTime.now();
+
     if(current_time.isBefore(_convertTime(hour, minutes))){
       return await notificationsPlugin.zonedSchedule(
-          taskId,
+          taskModel.id??0,
           taskModel.task_title,
           taskModel.task_description,
           _convertTime(hour,minutes),
@@ -71,14 +72,13 @@ class NotificationService{
     var f = await notificationsPlugin.getActiveNotifications();
     print(f.toString());
   }
-  void cancelTask(int? taskId)async{
+   Future<void>cancelTask(int? taskId)async{
     await getAllList();
-    await notificationsPlugin.cancel(taskId??-1);
+    await notificationsPlugin.cancel(taskId??0);
     await getAllList();
+
   }
-  Future<void> cancelNotifications(int? taskId) async {
-    await notificationsPlugin.cancel(taskId??-1);
-  }
+
   tz.TZDateTime _convertTime(int hour,int minutes){
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     tz.TZDateTime scheduleDate = 
